@@ -2751,8 +2751,12 @@
       await loadAkliData();
       renderProductsFeed();
       renderSavedProducts();
-      akliSupabase.auth.onAuthStateChange((_event,newSession)=>{
-        setTimeout(async()=>{await syncAkliUser(newSession);try{await loadAkliData();renderProductsFeed();}catch(err){console.error(err);}},0);
+      akliSupabase.auth.onAuthStateChange((event,newSession)=>{
+        setTimeout(async()=>{
+          await syncAkliUser(newSession);
+          if(event==='PASSWORD_RECOVERY'){switchView('auth');switchAuthTab('reset');document.getElementById('resetStep2Form').classList.remove('hidden');}
+          try{await loadAkliData();renderProductsFeed();}catch(err){console.error(err);}
+        },0);
       });
     } catch(err) {
       console.error(err);

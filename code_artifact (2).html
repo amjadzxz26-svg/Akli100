@@ -1,0 +1,2706 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>أكلي — مجتمع تجارب المنتجات الغذائية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --g: #16845d;
+    --gd: #116747;
+    --gl: #eaf6f0;
+    --ink: #17231e;
+    --muted: #6c7b73;
+    --line: #e3ebe6;
+    --bg: #f3f8f4;
+    --green: #16845d;
+    --deep: #116747;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Tajawal', Tahoma, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #eef5f0;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #b7d4c4;
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--g);
+  }
+
+  /* Sticky App Header */
+  .app-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px max(18px, calc((100% - 1180px) / 2));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    box-shadow: 0 4px 20px rgba(23, 35, 30, 0.03);
+  }
+
+  .logo-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .logo-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #16845d, #0f5f43);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    box-shadow: 0 6px 16px rgba(22, 132, 93, 0.25);
+  }
+
+  .logo-text {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--g);
+    line-height: 1.1;
+  }
+
+  .region-badge {
+    font-size: 11px;
+    font-weight: 700;
+    background: #edf7f2;
+    color: var(--gd);
+    border: 1px solid #cce6d8;
+    padding: 3px 9px;
+    border-radius: 99px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Navigation Pills */
+  .nav-tabs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f2f7f4;
+    padding: 5px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+  }
+
+  .nav-btn {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: 700 14px 'Tajawal', Tahoma, sans-serif;
+    padding: 9px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover {
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .nav-btn.active {
+    background: var(--g);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(22, 132, 93, 0.24);
+  }
+
+  .nav-badge {
+    background: #e6f4ed;
+    color: var(--gd);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 1px 7px;
+    border-radius: 99px;
+  }
+
+  .nav-btn.active .nav-badge {
+    background: #ffffff28;
+    color: #fff;
+  }
+
+  /* Containers & Cards (Preserved from Prototype 1 & 2) */
+  .view-section {
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+  .view-section.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .container-wide {
+    width: min(100% - 28px, 1180px);
+    margin: 24px auto 80px;
+  }
+
+  .container-narrow {
+    width: min(100% - 28px, 780px);
+    margin: 28px auto 80px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 8px 28px #1d51300b;
+  }
+
+  /* Prototype 1 Form Styles */
+  label.field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 18px 0 8px;
+    color: var(--ink);
+  }
+
+  input.form-input, select.form-input, textarea.form-input {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 13px 14px;
+    font: inherit;
+    background: #fcfefc;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input.form-input:focus, select.form-input:focus, textarea.form-input:focus {
+    border-color: var(--g);
+    box-shadow: 0 0 0 3px #16845d18;
+    background: #fff;
+  }
+
+  textarea.form-input {
+    min-height: 115px;
+    resize: vertical;
+    line-height: 1.8;
+  }
+
+  .upload {
+    border: 2px dashed #a8cdb8;
+    background: #f7fbf8;
+    border-radius: 16px;
+    padding: 22px;
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    transition: all 0.2s ease;
+  }
+
+  .upload:hover {
+    border-color: var(--g);
+    background: #eff8f3;
+  }
+
+  .upload strong {
+    display: block;
+    margin: 8px 0;
+    font-size: 16px;
+  }
+
+  .upload small {
+    color: var(--muted);
+    line-height: 1.7;
+    display: block;
+  }
+
+  .upload input {
+    display: none;
+  }
+
+  .previews {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .thumb {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f4f7f5;
+    aspect-ratio: 1;
+  }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .thumb button {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    border: 0;
+    border-radius: 50%;
+    width: 27px;
+    height: 27px;
+    background: #17231ecc;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    display: grid;
+    place-items: center;
+  }
+
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    margin-top: 22px;
+    padding: 15px;
+    border: 0;
+    border-radius: 13px;
+    background: var(--g);
+    color: #fff;
+    font: 700 16px 'Tajawal', Tahoma, sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .submit-btn:hover {
+    background: var(--gd);
+  }
+
+  .submit-btn:active {
+    transform: scale(0.99);
+  }
+
+  .result-box {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 16px;
+    background: #edf8f1;
+    border: 1px solid #cce8d6;
+  }
+
+  /* Prototype 2 Login Split Card Styles */
+  .auth-wrap {
+    width: min(100%, 980px);
+    margin: 28px auto 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 22px 70px #1d51301a;
+  }
+
+  .brand-side {
+    background: linear-gradient(150deg, #137b56, #0d553e);
+    color: #fff;
+    padding: 50px 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 600px;
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  .brand-mark {
+    width: 52px;
+    height: 52px;
+    border-radius: 17px;
+    background: #ffffff20;
+    display: grid;
+    place-items: center;
+    font-size: 27px;
+  }
+
+  .brand-side h1 {
+    font-size: 35px;
+    font-weight: 800;
+    line-height: 1.4;
+    margin: 46px 0 12px;
+  }
+
+  .brand-side p {
+    color: #d7eee2;
+    font-size: 17px;
+    line-height: 1.9;
+    margin: 0;
+  }
+
+  .chips {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+  }
+
+  .chip {
+    border: 1px solid #ffffff55;
+    border-radius: 30px;
+    padding: 7px 14px;
+    font-size: 13px;
+    color: #e9f7ef;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .brand-note {
+    color: #c6e5d4;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-top: 30px;
+  }
+
+  .panel-side {
+    padding: 44px 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .passrow {
+    position: relative;
+  }
+  .passrow input {
+    padding-left: 60px;
+  }
+  .show-pass-btn {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: #eff6f2;
+    color: var(--gd);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .auth-tab-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #f2f7f4;
+    padding: 5px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    margin-bottom: 22px;
+  }
+
+  .auth-tab-btn {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: 700 14px 'Tajawal', Tahoma, sans-serif;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .auth-tab-btn.active {
+    background: #fff;
+    color: var(--g);
+    box-shadow: 0 3px 10px rgba(22, 132, 93, 0.12);
+  }
+
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #9aa69f;
+    font-size: 12px;
+    margin: 22px 0;
+  }
+  .or-divider:before, .or-divider:after {
+    content: "";
+    height: 1px;
+    background: var(--line);
+    flex: 1;
+  }
+
+  /* Filter Pills */
+  .filter-pill {
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    padding: 7px 14px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .filter-pill:hover {
+    border-color: var(--g);
+    background: #f4faf6;
+  }
+  .filter-pill.active {
+    background: var(--g);
+    color: #fff;
+    border-color: var(--g);
+    box-shadow: 0 4px 12px rgba(22, 132, 93, 0.2);
+  }
+
+  /* Product Card */
+  .product-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 8px 26px rgba(29, 81, 48, 0.05);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(29, 81, 48, 0.1);
+    border-color: #bdd9c9;
+  }
+
+  /* Mobile Bottom Navigation */
+  .mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line);
+    padding: 8px 12px;
+    z-index: 45;
+    justify-content: space-around;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .mobile-nav-item {
+    border: 0;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    color: var(--muted);
+    font: 700 11px 'Tajawal', sans-serif;
+    padding: 6px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+  }
+  .mobile-nav-item.active {
+    color: var(--g);
+    background: #eef8f3;
+  }
+
+  @media (max-width: 820px) {
+    .desktop-nav {
+      display: none;
+    }
+    .mobile-bottom-nav {
+      display: flex;
+    }
+    .auth-wrap {
+      grid-template-columns: 1fr;
+      border-radius: 22px;
+    }
+    .brand-side {
+      min-height: auto;
+      padding: 28px 24px;
+    }
+    .brand-side h1 {
+      font-size: 25px;
+      margin: 20px 0 8px;
+    }
+    .brand-side p {
+      font-size: 14px;
+    }
+    .brand-note {
+      display: none;
+    }
+    .panel-side {
+      padding: 28px 22px 34px;
+    }
+    .row-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== STICKY HEADER ==================== -->
+<header class="app-header">
+  <div class="logo-group" onclick="switchView('explore')">
+    <div class="logo-mark">🍽️</div>
+    <div>
+      <div class="flex items-center gap-2">
+        <span class="logo-text">أكلي</span>
+        <span class="region-badge">تجارب غذائية موثقة ✨</span>
+      </div>
+      <div class="text-xs text-[#6c7b73] hidden sm:block">شارك تجربتك واكتشف آراء الناس قبل الشراء</div>
+    </div>
+  </div>
+
+  <!-- Desktop Navigation Tabs -->
+  <nav class="nav-tabs desktop-nav" aria-label="التنقل الرئيسي">
+    <button type="button" class="nav-btn active" data-tab="explore" onclick="switchView('explore')">
+      <span>🔍</span>
+      <span>تصفح وبحث</span>
+      <span class="nav-badge" id="navTotalCount">6</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="add" onclick="switchView('add')">
+      <span>📷</span>
+      <span>أضف تجربتك</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="saved" onclick="switchView('saved')">
+      <span>🔖</span>
+      <span>المحفوظات</span>
+      <span class="nav-badge" id="navSavedCount">0</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="auth" onclick="switchView('auth')">
+      <span>👤</span>
+      <span id="navAuthLabel">تسجيل الدخول</span>
+    </button>
+  </nav>
+
+  <!-- Quick Action CTA -->
+  <button type="button" onclick="switchView('add')" class="bg-[#16845d] hover:bg-[#116747] text-white text-xs sm:text-sm font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+    <span>➕</span>
+    <span>صوّر منتجاً</span>
+  </button>
+</header>
+
+<!-- ==================== VIEW 1: EXPLORE & SEARCH (الرئيسية وتصفح التجارب) ==================== -->
+<section id="view-explore" class="view-section active">
+  <div class="container-wide">
+
+    <!-- Hero Search Banner -->
+    <div class="relative overflow-hidden rounded-[26px] bg-gradient-to-l from-[#137b56] via-[#116747] to-[#0d553e] text-white p-6 sm:p-9 mb-7 shadow-lg">
+      <div class="relative z-10 max-w-3xl">
+        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/25 rounded-full px-3.5 py-1 text-xs font-bold mb-4">
+          <span>✨</span>
+          <span>مجتمع تشاركي لتقييم المنتجات الغذائية وتبادل الخبرات</span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-extrabold leading-snug mb-3">
+          محتار أمام رفوف السوبرماركت؟ شوف تجارب غيرك قبل ما تشتري!
+        </h1>
+        <p class="text-[#d7eee2] text-sm sm:text-base leading-relaxed mb-6">
+          ابحث عن أي منتج غذائي، شاهد صوره الحقيقية ومكوناته، واعرف طعمه وأفضل طريقة لاستخدامه وطبخه من تجارب مجتمعنا.
+        </p>
+
+        <!-- Instant Search Box -->
+        <div class="bg-white rounded-2xl p-2 shadow-xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+          <div class="flex-1 flex items-center gap-2.5 px-3 py-1.5">
+            <span class="text-xl text-[#16845d]">🔍</span>
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="ابحث عن منتج، ماركة، أو تصنيف (مثلاً: رز محمود، قشطة، جبنة غودا، زبادي)..."
+              class="w-full text-[#17231e] placeholder-[#829289] text-sm sm:text-base font-medium outline-none bg-transparent"
+              oninput="handleSearchAndFilter()"
+            >
+            <button id="clearSearchBtn" type="button" onclick="clearSearchInput()" class="hidden text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-6 h-6 grid place-items-center font-bold cursor-pointer">×</button>
+          </div>
+          <div class="flex items-center gap-2 border-t sm:border-t-0 sm:border-r border-[#e3ebe6] pt-2 sm:pt-0 sm:pr-2">
+            <select id="sortSelect" onchange="handleSearchAndFilter()" aria-label="ترتيب النتائج" class="bg-[#f3f8f4] text-[#17231e] text-xs sm:text-sm font-bold px-3 py-3 rounded-xl outline-none border border-[#e3ebe6] cursor-pointer">
+              <option value="newest">الأحدث إضافة ⚡</option>
+              <option value="rating">الأعلى تقييماً ⭐</option>
+              <option value="helpful">الأكثر فائدة 👍</option>
+              <option value="reviews">الأكثر تجارب 💬</option>
+            </select>
+            <button type="button" onclick="switchView('add')" class="bg-[#16845d] hover:bg-[#116747] text-white text-xs sm:text-sm font-bold px-4 py-3 rounded-xl whitespace-nowrap transition cursor-pointer">
+              + أضف تجربتك
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Search Suggestions -->
+        <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
+          <span class="text-[#c6e5d4] font-bold">بحث سريع:</span>
+          <button type="button" onclick="setQuickSearch('رز محمود')" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-full transition cursor-pointer">🍚 رز محمود</button>
+          <button type="button" onclick="setQuickSearch('قشطة')" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-full transition cursor-pointer">🥣 قشطة للحلويات</button>
+          <button type="button" onclick="setQuickSearch('جبنة غودا')" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-full transition cursor-pointer">🧀 جبنة غودا</button>
+          <button type="button" onclick="setQuickSearch('زبادي')" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-full transition cursor-pointer">🥛 لبن زبادي للطبخ</button>
+          <button type="button" onclick="setQuickSearch('عجينة')" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-full transition cursor-pointer">🥟 رقائق عجينة</button>
+        </div>
+      </div>
+
+      <!-- Decorative Background Circles -->
+      <div class="pointer-events-none absolute -left-16 -bottom-20 w-72 h-72 rounded-full bg-white/5 blur-2xl"></div>
+      <div class="pointer-events-none absolute left-12 top-6 text-7xl opacity-10 select-none hidden lg:block">🥘🛒🧀</div>
+    </div>
+
+    <!-- Filters: Category Only (Store filter removed from Browse & Search) -->
+    <div class="card mb-6 !p-4 sm:!p-5">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
+          <span class="text-xs font-extrabold text-[#6c7b73] ml-1 shrink-0">التصنيف:</span>
+          <button type="button" class="filter-pill active shrink-0" data-cat="all" onclick="setCategoryFilter('all')">الكل</button>
+          <button type="button" class="filter-pill shrink-0" data-cat="الرز والحبوب" onclick="setCategoryFilter('الرز والحبوب')">🌾 الرز والحبوب</button>
+          <button type="button" class="filter-pill shrink-0" data-cat="الألبان" onclick="setCategoryFilter('الألبان')">🥛 الألبان</button>
+          <button type="button" class="filter-pill shrink-0" data-cat="الأجبان" onclick="setCategoryFilter('الأجبان')">🧀 الأجبان</button>
+          <button type="button" class="filter-pill shrink-0" data-cat="العصائر" onclick="setCategoryFilter('العصائر')">🧃 العصائر</button>
+          <button type="button" class="filter-pill shrink-0" data-cat="الصوصات" onclick="setCategoryFilter('الصوصات')">🥫 الصوصات</button>
+          <button type="button" class="filter-pill shrink-0" data-cat="الحلويات" onclick="setCategoryFilter('الحلويات')">🥮 الحلويات</button>
+          <button type="button" class="filter-pill shrink-0" data-cat="منتجات أخرى" onclick="setCategoryFilter('منتجات أخرى')">🛒 منتجات أخرى</button>
+        </div>
+
+        <button id="resetFiltersBtn" type="button" onclick="resetAllFilters()" class="hidden text-xs font-bold text-[#16845d] hover:underline px-2 py-1 cursor-pointer">
+          إعادة ضبط الفلاتر ↺
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Status Bar -->
+    <div class="flex items-center justify-between mb-4 px-1">
+      <div class="text-sm font-bold text-[#17231e]" id="resultsSummaryText">
+        عرض أحدث التجارب الغذائية الموثقة
+      </div>
+      <div class="text-xs text-[#6c7b73] flex items-center gap-2">
+        <span>💡 اضغط على أي منتج لمشاهدة صور المكونات وتجارب الأعضاء</span>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <!-- Empty State -->
+    <div id="emptySearchState" class="hidden card text-center py-14 my-4">
+      <div class="text-5xl mb-3">🔍</div>
+      <h3 class="text-xl font-extrabold mb-2">لم نجد منتجاً يطابق بحثك حالياً</h3>
+      <p class="text-sm text-[#6c7b73] max-w-md mx-auto mb-6 leading-relaxed">
+        هل جربت هذا المنتج من قبل؟ كن أول من يصوره ويشارك تجربته ليستفيد منه الجميع!
+      </p>
+      <div class="flex justify-center gap-3">
+        <button type="button" onclick="resetAllFilters()" class="px-5 py-2.5 rounded-xl border border-[#e3ebe6] font-bold text-sm hover:bg-gray-50 cursor-pointer">
+          عرض كل المنتجات
+        </button>
+        <button type="button" onclick="switchView('add')" class="px-5 py-2.5 rounded-xl bg-[#16845d] text-white font-bold text-sm hover:bg-[#116747] cursor-pointer">
+          📷 أضف هذا المنتج الآن
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== VIEW 2: ADD PRODUCT EXPERIENCE (مدمجة ومطورة من النموذج الأول) ==================== -->
+<section id="view-add" class="view-section">
+  <main class="container-narrow">
+    <section class="intro mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-1.5 text-xs font-bold text-[#16845d] bg-[#eaf6f0] px-3 py-1 rounded-full mb-2">
+          <span>📸</span>
+          <span>مشاركة مجتمعية سريعة</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold m-0 mb-1.5">إضافة تجربة جديدة</h1>
+        <p class="text-[#6c7b73] text-sm leading-relaxed m-0">
+          صوّر المنتج من أكثر من زاوية، واكتب تجربتك حتى يستفيد منها الآخرون.
+        </p>
+      </div>
+      <button type="button" onclick="fillDemoProduct()" class="self-start sm:self-center shrink-0 text-xs font-bold bg-white border border-[#cce6d8] text-[#116747] hover:bg-[#eff8f3] px-3.5 py-2.5 rounded-xl transition shadow-sm cursor-pointer">
+        ✨ تعبئة مثال جاهز للتجربة
+      </button>
+    </section>
+
+    <section class="card">
+      <form id="postForm">
+        <!-- Photo Upload Box (From Prototype 1 + Sample Photo Generator) -->
+        <div class="flex items-center justify-between mb-2">
+          <label class="field-label !m-0">صور المنتج</label>
+          <button type="button" onclick="addGeneratedSamplePhoto()" class="text-xs font-bold text-[#16845d] hover:underline flex items-center gap-1 cursor-pointer">
+            <span>🖼️</span>
+            <span>إرفاق صورة توضيحية تجريبية</span>
+          </button>
+        </div>
+
+        <label class="upload" for="photos">
+          <span class="text-3xl block">📷</span>
+          <strong>اضغط لاختيار صور المنتج</strong>
+          <small>
+            يمكنك اختيار عدة صور: واجهة العبوة، الخلف، والمكونات.<br>
+            تُحفظ الصور مع مشاركتك لتظهر للأعضاء عند البحث عن المنتج.
+          </small>
+          <input id="photos" type="file" accept="image/*" multiple>
+        </label>
+
+        <div class="previews" id="previews"></div>
+
+        <!-- Row 1: Name & Category (Required) -->
+        <div class="row-2">
+          <div>
+            <label class="field-label" for="name">اسم المنتج *</label>
+            <input class="form-input" id="name" required placeholder="مثلاً: رز محمود بسمتي / قشطة طازجة">
+          </div>
+          <div>
+            <label class="field-label" for="category">التصنيف *</label>
+            <select class="form-input" id="category" required>
+              <option value="">اختر التصنيف</option>
+              <option value="الرز والحبوب">الرز والحبوب</option>
+              <option value="الألبان">الألبان</option>
+              <option value="الأجبان">الأجبان</option>
+              <option value="العصائر">العصائر</option>
+              <option value="الصوصات">الصوصات</option>
+              <option value="الحلويات">الحلويات</option>
+              <option value="منتجات أخرى">منتجات أخرى</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 2: Store & Country (BOTH OPTIONAL as requested) -->
+        <div class="row-2">
+          <div>
+            <label class="field-label" for="storeInput">مكان شراء المنتج <span class="text-xs font-normal text-[#6c7b73]">(اختياري)</span></label>
+            <input class="form-input" id="storeInput" list="storesSuggestions" placeholder="مثلاً: سوبرماركت، محل عربي... (اختياري)">
+            <datalist id="storesSuggestions">
+              <option value="Albert Heijn">
+              <option value="Jumbo">
+              <option value="Lidl">
+              <option value="Aldi">
+              <option value="REWE">
+              <option value="Edeka">
+              <option value="Kaufland">
+              <option value="محل عربي / تركي">
+            </datalist>
+          </div>
+          <div>
+            <label class="field-label" for="countryInput">الدولة أو المدينة <span class="text-xs font-normal text-[#6c7b73]">(اختياري)</span></label>
+            <input class="form-input" id="countryInput" placeholder="أدخل الدولة أو المدينة (اختياري)">
+          </div>
+        </div>
+
+        <!-- Row 3: Interactive Star Rating -->
+        <div>
+          <label class="field-label">تقييمك للمنتج</label>
+          <div class="flex items-center justify-between border border-[#e3ebe6] bg-[#fcfefc] rounded-xl px-4 py-2.5">
+            <div class="flex items-center gap-1" id="starPicker">
+              <button type="button" onclick="selectRating(1)" class="star-btn text-2xl transition hover:scale-110 cursor-pointer">⭐</button>
+              <button type="button" onclick="selectRating(2)" class="star-btn text-2xl transition hover:scale-110 cursor-pointer">⭐</button>
+              <button type="button" onclick="selectRating(3)" class="star-btn text-2xl transition hover:scale-110 cursor-pointer">⭐</button>
+              <button type="button" onclick="selectRating(4)" class="star-btn text-2xl transition hover:scale-110 cursor-pointer">⭐</button>
+              <button type="button" onclick="selectRating(5)" class="star-btn text-2xl transition hover:scale-110 cursor-pointer">⭐</button>
+            </div>
+            <span id="ratingTextBadge" class="text-xs font-extrabold bg-[#eaf6f0] text-[#116747] px-2.5 py-1 rounded-full">5 / 5 ممتاز</span>
+          </div>
+        </div>
+
+        <!-- Quick Helpful Tags (Without Rennet or Price) -->
+        <div>
+          <label class="field-label">وسوم سريعة لوصف تجربتك <span class="text-xs font-normal text-[#6c7b73]">(اختياري)</span></label>
+          <div class="flex flex-wrap gap-2" id="quickTagsContainer">
+            <button type="button" onclick="toggleQuickTag(this, 'طعم ممتاز ✨')" class="tag-chip border border-[#16845d] bg-[#16845d] text-white text-xs font-bold px-3.5 py-2 rounded-full transition cursor-pointer">طعم ممتاز ✨</button>
+            <button type="button" onclick="toggleQuickTag(this, 'مناسب للطبخ 🍲')" class="tag-chip border border-[#e3ebe6] bg-[#fcfefc] text-xs font-bold px-3.5 py-2 rounded-full transition cursor-pointer">مناسب للطبخ 🍲</button>
+            <button type="button" onclick="toggleQuickTag(this, 'مكونات واضحة 📋')" class="tag-chip border border-[#e3ebe6] bg-[#fcfefc] text-xs font-bold px-3.5 py-2 rounded-full transition cursor-pointer">مكونات واضحة 📋</button>
+            <button type="button" onclick="toggleQuickTag(this, 'أنصح بتجربته 👍')" class="tag-chip border border-[#e3ebe6] bg-[#fcfefc] text-xs font-bold px-3.5 py-2 rounded-full transition cursor-pointer">أنصح بتجربته 👍</button>
+            <button type="button" onclick="toggleQuickTag(this, 'جودة عالية ⭐')" class="tag-chip border border-[#e3ebe6] bg-[#fcfefc] text-xs font-bold px-3.5 py-2 rounded-full transition cursor-pointer">جودة عالية ⭐</button>
+            <button type="button" onclick="toggleQuickTag(this, 'بديل ناجح 🔄')" class="tag-chip border border-[#e3ebe6] bg-[#fcfefc] text-xs font-bold px-3.5 py-2 rounded-full transition cursor-pointer">بديل ناجح 🔄</button>
+          </div>
+        </div>
+
+        <!-- Experience Textarea (From Prototype 1) -->
+        <label class="field-label" for="experience">تجربتك مع المنتج *</label>
+        <textarea class="form-input" id="experience" required placeholder="كيف كان الطعم؟ كيف استخدمته؟ وما النتيجة؟"></textarea>
+
+        <button class="submit-btn" type="submit">نشر التجربة وإضافتها للمجتمع 🚀</button>
+        <p class="text-xs text-[#6c7b73] leading-relaxed mt-3 mb-0">
+          بمجرد النشر، ستظهر تجربتك فوراً في صفحة "تصفح وبحث" ليستفيد منها جميع الزوار.
+        </p>
+      </form>
+
+      <!-- Result Preview Box (Preserved from Prototype 1 + Link to Feed) -->
+      <div class="result-box" id="result">
+        <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+          <h3 class="m-0 text-[#176746] font-extrabold text-lg">✅ تم نشر تجربتك بنجاح!</h3>
+          <button type="button" onclick="switchView('explore')" class="bg-[#16845d] text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-[#116747] cursor-pointer">
+            عرض المنتج في الصفحة الرئيسية 🔍
+          </button>
+        </div>
+        <p id="summary" class="m-0 leading-relaxed text-sm text-[#17231e] font-medium"></p>
+        <div class="previews" id="publishedPhotos"></div>
+      </div>
+    </section>
+  </main>
+</section>
+
+<!-- ==================== VIEW 3: SAVED / BOOKMARKED PRODUCTS (المحفوظات) ==================== -->
+<section id="view-saved" class="view-section">
+  <div class="container-wide">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold m-0 mb-1">🔖 قائمة المنتجات المحفوظة</h1>
+        <p class="text-sm text-[#6c7b73] m-0">
+          المنتجات التي حفظتها للرجوع إليها بسهولة أثناء تسوقك.
+        </p>
+      </div>
+      <button type="button" onclick="switchView('explore')" class="self-start sm:self-center text-xs font-bold bg-white border border-[#e3ebe6] px-4 py-2.5 rounded-xl hover:border-[#16845d] cursor-pointer">
+        + استكشاف المزيد من المنتجات
+      </button>
+    </div>
+
+    <div id="savedProductsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <div id="emptySavedState" class="card text-center py-16">
+      <div class="text-5xl mb-3">🔖</div>
+      <h3 class="text-xl font-extrabold mb-2">قائمة محفوظاتك فارغة حالياً</h3>
+      <p class="text-sm text-[#6c7b73] max-w-md mx-auto mb-6 leading-relaxed">
+        أثناء تصفحك لتجارب الناس، اضغط على زر <strong>"حفظ 🔖"</strong> على أي منتج يعجبك لتجده هنا بسهولة في أي وقت.
+      </p>
+      <button type="button" onclick="switchView('explore')" class="px-6 py-3 rounded-xl bg-[#16845d] text-white font-bold text-sm hover:bg-[#116747] cursor-pointer">
+        تصفح المنتجات الآن 🔍
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== VIEW 4: LOGIN, SIGN UP & PASSWORD RESET (مدمجة ومصلحة بالكامل) ==================== -->
+<section id="view-auth" class="view-section">
+  <div class="px-3">
+    <!-- Logged-In User Profile Card (Shown when signed in) -->
+    <div id="loggedInProfileBox" class="hidden container-narrow">
+      <div class="card !p-7">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-[#e3ebe6]">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#16845d] to-[#0d553e] text-white text-2xl font-extrabold grid place-items-center shadow-md" id="profileAvatar">
+              م
+            </div>
+            <div>
+              <div class="inline-flex items-center gap-1.5 text-xs font-bold bg-[#eaf6f0] text-[#116747] px-2.5 py-0.5 rounded-full mb-1">
+                <span>✓ حسابك مفعل في مجتمع أكلي</span>
+              </div>
+              <h2 class="text-2xl font-extrabold m-0" id="profileNameDisplay">عضو أكلي</h2>
+              <p class="text-sm text-[#6c7b73] m-0 mt-0.5" id="profileMetaDisplay">name@example.com</p>
+            </div>
+          </div>
+          <button type="button" onclick="logoutUser()" class="text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 px-4 py-2.5 rounded-xl transition cursor-pointer">
+            تسجيل الخروج
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
+          <div class="bg-[#f7fbf8] border border-[#e3ebe6] rounded-2xl p-4 text-center">
+            <div class="text-2xl font-extrabold text-[#16845d]" id="statUserPosts">1</div>
+            <div class="text-xs text-[#6c7b73] font-bold mt-1">حالة الحساب: نشط ✅</div>
+          </div>
+          <div class="bg-[#f7fbf8] border border-[#e3ebe6] rounded-2xl p-4 text-center">
+            <div class="text-2xl font-extrabold text-[#16845d]" id="statUserSaved">0</div>
+            <div class="text-xs text-[#6c7b73] font-bold mt-1">منتجات محفوظة</div>
+          </div>
+          <div class="bg-[#f7fbf8] border border-[#e3ebe6] rounded-2xl p-4 text-center">
+            <div class="text-2xl font-extrabold text-[#16845d]" id="statTotalCommunity">6</div>
+            <div class="text-xs text-[#6c7b73] font-bold mt-1">إجمالي تجارب المجتمع</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <button type="button" onclick="switchView('add')" class="bg-[#16845d] hover:bg-[#116747] text-white font-bold text-sm px-5 py-3 rounded-xl transition cursor-pointer">
+            📷 أضف تجربة منتج جديد
+          </button>
+          <button type="button" onclick="switchView('saved')" class="bg-white border border-[#e3ebe6] hover:border-[#16845d] font-bold text-sm px-5 py-3 rounded-xl transition cursor-pointer">
+            🔖 عرض المحفوظات
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prototype 2 Split Auth Card with 3 Separate Forms (Login / Sign Up / Reset) -->
+    <main class="auth-wrap" id="authSplitWrap">
+      <section class="brand-side">
+        <div class="brand-logo">
+          <span class="brand-mark">🍽️</span>
+          <span>أكلي</span>
+        </div>
+        <div>
+          <h1>تجارب الناس…<br>تساعدك تختار وتطبخ.</h1>
+          <p>شارك تجربتك مع المنتجات الغذائية، واكتشف كيف استخدمها الآخرون وما الذي نجح معهم.</p>
+          <div class="chips">
+            <span class="chip">تجارب حقيقية</span>
+            <span class="chip">صور متعددة</span>
+            <span class="chip">مجتمع عربي</span>
+          </div>
+        </div>
+        <div class="brand-note">
+          منصة مجتمعية لمشاركة التجارب الحقيقية حول المنتجات الغذائية والبدائل المجربة.
+        </div>
+      </section>
+
+      <section class="panel-side">
+        <!-- Top Mode Switch Tabs -->
+        <div class="auth-tab-switch" id="authTopTabs">
+          <button type="button" id="tabBtnLogin" class="auth-tab-btn active" onclick="switchAuthTab('login')">تسجيل الدخول</button>
+          <button type="button" id="tabBtnSignup" class="auth-tab-btn" onclick="switchAuthTab('signup')">إنشاء حساب جديد</button>
+        </div>
+
+        <h2 id="authHeading" class="text-2xl sm:text-[27px] font-extrabold m-0 mb-1.5">أهلاً بعودتك</h2>
+        <p class="text-[#6c7b73] text-sm leading-relaxed m-0 mb-5" id="authDesc">
+          سجّل الدخول لتشارك تجاربك وتحفظ المنتجات التي تهمك.
+        </p>
+
+        <!-- Status / Alert Box -->
+        <div id="authMsg" role="status" class="hidden mb-4 p-3.5 rounded-xl text-xs leading-relaxed font-bold border"></div>
+
+        <!-- ==================== FORM 1: LOGIN FORM ==================== -->
+        <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+          <label class="field-label !mt-2" for="loginEmail">البريد الإلكتروني</label>
+          <input class="form-input" id="loginEmail" type="email" placeholder="name@example.com" autocomplete="email" required>
+
+          <div class="flex items-center justify-between mt-4 mb-2">
+            <label class="field-label !m-0" for="loginPassword">كلمة المرور</label>
+            <button type="button" onclick="switchAuthTab('reset')" class="text-xs font-bold text-[#16845d] hover:underline bg-transparent border-0 cursor-pointer">
+              نسيت كلمة المرور؟
+            </button>
+          </div>
+          <div class="passrow">
+            <input class="form-input" id="loginPassword" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" required minlength="6">
+            <button class="show-pass-btn" type="button" onclick="togglePassVisibility('loginPassword', this)">إظهار</button>
+          </div>
+
+          <div class="flex items-center justify-between mt-3.5">
+            <label class="inline-flex items-center gap-2 text-xs font-bold text-[#6c7b73] cursor-pointer">
+              <input type="checkbox" id="rememberMeCheck" checked class="accent-[#16845d] w-4 h-4 rounded">
+              <span>تذكرني على هذا الجهاز</span>
+            </label>
+          </div>
+
+          <button class="submit-btn" id="loginSubmitBtn" type="submit">تسجيل الدخول</button>
+
+          <div class="text-center text-[#6c7b73] text-xs sm:text-sm mt-5">
+            <span>ليس لديك حساب؟</span>
+            <button type="button" onclick="switchAuthTab('signup')" class="text-[#16845d] font-extrabold hover:underline bg-transparent border-0 cursor-pointer mr-1">
+              إنشاء حساب جديد
+            </button>
+          </div>
+        </form>
+
+        <!-- ==================== FORM 2: SIGN UP FORM (إنشاء حساب) ==================== -->
+        <form id="signupForm" class="hidden" onsubmit="handleSignupSubmit(event)">
+          <label class="field-label !mt-2" for="signupName">الاسم أو اللقب *</label>
+          <input class="form-input" id="signupName" type="text" placeholder="مثلاً: سارة محمود أو أبو عمر" required>
+
+          <label class="field-label" for="signupEmail">البريد الإلكتروني *</label>
+          <input class="form-input" id="signupEmail" type="email" placeholder="name@example.com" autocomplete="email" required>
+
+          <label class="field-label" for="signupCity">المدينة / مكان الإقامة <span class="text-xs font-normal text-[#6c7b73]">(اختياري)</span></label>
+          <input class="form-input" id="signupCity" type="text" placeholder="أدخل اسم مدينتك (اختياري)">
+
+          <div class="row-2">
+            <div>
+              <label class="field-label" for="signupPassword">كلمة المرور *</label>
+              <div class="passrow">
+                <input class="form-input" id="signupPassword" type="password" placeholder="6 أحرف على الأقل" autocomplete="new-password" required minlength="6">
+                <button class="show-pass-btn" type="button" onclick="togglePassVisibility('signupPassword', this)">إظهار</button>
+              </div>
+            </div>
+            <div>
+              <label class="field-label" for="signupPasswordConfirm">تأكيد كلمة المرور *</label>
+              <div class="passrow">
+                <input class="form-input" id="signupPasswordConfirm" type="password" placeholder="أعد كتابة كلمة المرور" autocomplete="new-password" required minlength="6">
+                <button class="show-pass-btn" type="button" onclick="togglePassVisibility('signupPasswordConfirm', this)">إظهار</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="submit-btn" type="submit">إنشاء الحساب الآن ✨</button>
+
+          <div class="text-center text-[#6c7b73] text-xs sm:text-sm mt-5">
+            <span>لديك حساب بالفعل؟</span>
+            <button type="button" onclick="switchAuthTab('login')" class="text-[#16845d] font-extrabold hover:underline bg-transparent border-0 cursor-pointer mr-1">
+              تسجيل الدخول
+            </button>
+          </div>
+        </form>
+
+        <!-- ==================== FORM 3: FORGOT / RESET PASSWORD FORM ==================== -->
+        <div id="resetFormContainer" class="hidden">
+          <!-- Step 1: Request Code -->
+          <form id="resetStep1Form" onsubmit="handleResetStep1(event)">
+            <label class="field-label !mt-2" for="resetEmail">أدخل بريدك الإلكتروني المسجل لاستعادة كلمة المرور</label>
+            <input class="form-input" id="resetEmail" type="email" placeholder="name@example.com" required>
+            <button class="submit-btn" type="submit">إرسال رمز التحقق 📩</button>
+          </form>
+
+          <!-- Step 2: Enter Code & New Password -->
+          <form id="resetStep2Form" class="hidden mt-4 pt-4 border-t border-[#e3ebe6]" onsubmit="handleResetStep2(event)">
+            <div class="bg-[#eef8f1] border border-[#cce8d6] text-[#176746] p-3 rounded-xl text-xs font-bold mb-3">
+              💡 تم إرسال رمز التحقق المؤقت (صالح لمدة 3 دقائق): <span id="dynamicOtpDisplay" class="underline font-extrabold tracking-widest">------</span>
+            </div>
+
+            <label class="field-label !mt-2" for="resetCodeInput">رمز التحقق (6 أرقام)</label>
+            <input class="form-input" id="resetCodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="أدخل الرمز المكون من 6 أرقام" required>
+
+            <label class="field-label" for="resetNewPassword">كلمة المرور الجديدة</label>
+            <div class="passrow">
+              <input class="form-input" id="resetNewPassword" type="password" placeholder="أدخل كلمة المرور الجديدة (6 أحرف على الأقل)" required minlength="6">
+              <button class="show-pass-btn" type="button" onclick="togglePassVisibility('resetNewPassword', this)">إظهار</button>
+            </div>
+
+            <button class="submit-btn" type="submit">حفظ كلمة المرور الجديدة وتحديث الحساب ✅</button>
+          </form>
+
+          <div class="text-center mt-5">
+            <button type="button" onclick="switchAuthTab('login')" class="text-xs font-extrabold text-[#16845d] hover:underline bg-transparent border-0 cursor-pointer">
+              ← العودة إلى تسجيل الدخول
+            </button>
+          </div>
+        </div>
+
+        <!-- Social Login Options -->
+        <div id="socialLoginSection">
+          <div class="or-divider">أو تابع سريعاً باستخدام</div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="demoSocialLogin('Google')" class="bg-white hover:bg-[#f4f8f5] border border-[#e3ebe6] rounded-xl py-2.5 px-2 font-bold text-xs cursor-pointer transition flex items-center justify-center gap-1.5">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/><path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.9C3.5 21.4 7.4 24 12 24z"/></svg>
+              <span>Google</span>
+            </button>
+            <button type="button" onclick="demoSocialLogin('Apple')" class="bg-white hover:bg-[#f4f8f5] border border-[#e3ebe6] rounded-xl py-2.5 px-2 font-bold text-xs cursor-pointer transition flex items-center justify-center gap-1.5">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+              <span>Apple</span>
+            </button>
+            <button type="button" onclick="demoSocialLogin('Facebook')" class="bg-white hover:bg-[#f4f8f5] border border-[#e3ebe6] rounded-xl py-2.5 px-2 font-bold text-xs cursor-pointer transition flex items-center justify-center gap-1.5">
+              <svg class="w-4 h-4 shrink-0 text-[#1877F2]" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <span>Facebook</span>
+            </button>
+          </div>
+
+          <div class="text-[11px] text-[#94a199] leading-relaxed mt-5 text-center">
+            بالمتابعة، أنت توافق على شروط الاستخدام وسياسة الخصوصية لمجتمع أكلي.
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</section>
+
+<!-- ==================== PRODUCT DETAILS & COMMUNITY REVIEWS MODAL ==================== -->
+<div id="productModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto" onclick="handleModalBackdropClick(event)">
+  <div class="bg-white border border-[#e3ebe6] rounded-[26px] max-w-4xl w-full overflow-hidden shadow-2xl my-auto max-h-[92vh] flex flex-col" onclick="event.stopPropagation()">
+    
+    <!-- Modal Header -->
+    <div class="px-5 py-4 border-b border-[#e3ebe6] flex items-center justify-between gap-3 bg-[#fcfefc]">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span id="modalCategoryBadge" class="text-xs font-extrabold px-3 py-1 rounded-full bg-[#eaf6f0] text-[#116747]"></span>
+        <span id="modalStoreBadge" class="hidden text-xs font-extrabold px-3 py-1 rounded-full bg-gray-100 text-gray-800"></span>
+        <span id="modalCountryBadge" class="hidden text-xs font-bold px-3 py-1 rounded-full border border-[#e3ebe6] text-[#6c7b73]"></span>
+      </div>
+      <button type="button" onclick="closeProductModal()" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-lg grid place-items-center cursor-pointer">
+        ×
+      </button>
+    </div>
+
+    <!-- Modal Scrollable Content -->
+    <div class="p-5 sm:p-7 overflow-y-auto space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- Multi-Angle Photo Switcher -->
+        <div class="md:col-span-5">
+          <div class="relative rounded-2xl overflow-hidden border border-[#e3ebe6] bg-[#f4f8f5] aspect-square mb-3">
+            <img id="modalMainImage" src="" alt="صورة المنتج" class="w-full h-full object-cover">
+            <div id="modalImageCaption" class="absolute bottom-2.5 right-2.5 left-2.5 bg-black/65 backdrop-blur-xs text-white text-xs font-bold px-3 py-1.5 rounded-xl text-center">
+              واجهة العبوة
+            </div>
+          </div>
+          <div id="modalThumbnails" class="grid grid-cols-3 gap-2"></div>
+        </div>
+
+        <!-- Product Summary & Metadata -->
+        <div class="md:col-span-7 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-3 mb-2">
+              <h2 id="modalProductName" class="text-xl sm:text-2xl font-extrabold text-[#17231e] m-0"></h2>
+            </div>
+
+            <!-- Rating Bar -->
+            <div class="flex items-center gap-3 mb-4">
+              <div class="flex items-center gap-1 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
+                <span class="text-amber-500">⭐</span>
+                <span id="modalRatingValue" class="font-extrabold text-sm text-amber-900">4.9</span>
+              </div>
+              <span id="modalReviewsCountText" class="text-xs font-bold text-[#6c7b73]"></span>
+            </div>
+
+            <!-- Tags -->
+            <div id="modalTagsList" class="flex flex-wrap gap-1.5 mb-5"></div>
+
+            <!-- Highlighted Community Tip Box -->
+            <div class="bg-[#f4f9f6] border border-[#d5e8dd] rounded-2xl p-4 mb-4">
+              <div class="text-xs font-extrabold text-[#116747] mb-1">💡 خلاصة تجارب المجتمع:</div>
+              <p id="modalSummaryText" class="text-sm text-[#17231e] leading-relaxed m-0"></p>
+            </div>
+          </div>
+
+          <!-- Modal Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2.5 pt-3 border-t border-[#e3ebe6]">
+            <button id="modalHelpfulBtn" type="button" class="flex-1 bg-[#f2f7f4] hover:bg-[#e3f1e9] text-[#17231e] font-bold text-xs sm:text-sm py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer border border-[#d5e8dd]">
+              <span>👍</span>
+              <span id="modalHelpfulText">أفادني (0)</span>
+            </button>
+            <button id="modalBookmarkBtn" type="button" class="flex-1 bg-white hover:bg-gray-50 text-[#17231e] font-bold text-xs sm:text-sm py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer border border-[#e3ebe6]">
+              <span>🔖</span>
+              <span id="modalBookmarkText">حفظ في قائمتي</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community Experiences List for this Product -->
+      <div class="border-t border-[#e3ebe6] pt-6">
+        <h3 class="text-lg font-extrabold mb-4 flex items-center gap-2">
+          <span>💬</span>
+          <span>تجارب الأعضاء مع هذا المنتج</span>
+          <span id="modalExperiencesBadge" class="text-xs bg-[#eaf6f0] text-[#116747] px-2.5 py-0.5 rounded-full"></span>
+        </h3>
+
+        <div id="modalReviewsList" class="space-y-3 mb-6"></div>
+
+        <!-- Add Your Own Review to this Product -->
+        <div class="bg-[#f8fbf9] border border-[#d6e8de] rounded-2xl p-4 sm:p-5">
+          <h4 class="text-sm sm:text-base font-extrabold text-[#116747] m-0 mb-3">
+            ✍️ هل جربت هذا المنتج؟ أضف تجربتك أو نصيحتك هنا:
+          </h4>
+          <form id="modalAddReviewForm" onsubmit="submitModalReview(event)">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+              <input id="modalReviewerName" type="text" required placeholder="اسمك (مثلاً: ريم أو أبو عمر)" class="form-input !py-2.5 text-sm">
+              <select id="modalReviewerRating" class="form-input !py-2.5 text-sm font-bold">
+                <option value="5">⭐⭐⭐⭐⭐ (5/5 ممتاز وأنصح به)</option>
+                <option value="4">⭐⭐⭐⭐ (4/5 جيد جداً)</option>
+                <option value="3">⭐⭐⭐ (3/5 مقبول)</option>
+                <option value="2">⭐⭐ (2/5 لم يعجبني كثيراً)</option>
+                <option value="1">⭐ (1/5 لا أنصح به)</option>
+              </select>
+            </div>
+            <textarea id="modalReviewerComment" required placeholder="اكتب رأيك بصراحة: كيف استخدمته؟ وكيف كانت النتيجة؟" class="form-input !min-h-[80px] text-sm mb-3"></textarea>
+            <button type="submit" class="bg-[#16845d] hover:bg-[#116747] text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl cursor-pointer transition">
+              إضافة تجربتي على المنتج 💬
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TOAST NOTIFICATION ==================== -->
+<div id="toastBox" class="fixed bottom-20 sm:bottom-6 left-6 z-50 hidden bg-[#17231e] text-white px-4 py-3 rounded-2xl shadow-xl border border-white/15 flex items-center gap-2.5 text-xs sm:text-sm font-bold">
+  <span id="toastIcon">✅</span>
+  <span id="toastMessage">تمت العملية بنجاح</span>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="mt-auto border-t border-[#e3ebe6] bg-white py-6 px-4 text-center text-xs text-[#6c7b73] mb-14 sm:mb-0">
+  <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="font-bold text-[#17231e]">
+      🍽️ أكلي — تجارب غذائية يشاركها الناس
+    </div>
+    <div class="flex items-center gap-4">
+      <button type="button" onclick="switchView('explore')" class="hover:text-[#16845d] font-bold cursor-pointer">تصفح المنتجات</button>
+      <button type="button" onclick="switchView('add')" class="hover:text-[#16845d] font-bold cursor-pointer">إضافة تجربة</button>
+      <button type="button" onclick="switchView('saved')" class="hover:text-[#16845d] font-bold cursor-pointer">المحفوظات</button>
+      <button type="button" onclick="switchView('auth')" class="hover:text-[#16845d] font-bold cursor-pointer">حسابي</button>
+    </div>
+  </div>
+</footer>
+
+<!-- ==================== MOBILE BOTTOM NAVIGATION ==================== -->
+<nav class="mobile-bottom-nav" aria-label="تنقل الجوال">
+  <button type="button" class="mobile-nav-item active" data-tab="explore" onclick="switchView('explore')">
+    <span class="text-lg">🔍</span>
+    <span>تصفح وبحث</span>
+  </button>
+  <button type="button" class="mobile-nav-item" data-tab="add" onclick="switchView('add')">
+    <span class="text-lg">📷</span>
+    <span>أضف تجربتك</span>
+  </button>
+  <button type="button" class="mobile-nav-item" data-tab="saved" onclick="switchView('saved')">
+    <span class="text-lg">🔖</span>
+    <span>المحفوظات</span>
+  </button>
+  <button type="button" class="mobile-nav-item" data-tab="auth" onclick="switchView('auth')">
+    <span class="text-lg">👤</span>
+    <span id="mobileAuthLabel">حسابي</span>
+  </button>
+</nav>
+
+<!-- ==================== APPLICATION LOGIC ==================== -->
+<script>
+  /* --------------------------------------------------------------------------
+     0. SECURITY UTILITIES: XSS SANITIZATION, URL VALIDATION & CRYPTO HASHING
+  -------------------------------------------------------------------------- */
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function sanitizeImageUrl(url) {
+    if (!url || typeof url !== 'string') return '';
+    const trimmed = url.trim();
+    if (
+      trimmed.startsWith('data:image/svg+xml;utf8,') ||
+      trimmed.startsWith('data:image/jpeg;base64,') ||
+      trimmed.startsWith('data:image/png;base64,') ||
+      trimmed.startsWith('data:image/webp;base64,') ||
+      trimmed.startsWith('https://')
+    ) {
+      return trimmed.replace(/"/g, '%22').replace(/'/g, '%27');
+    }
+    return '';
+  }
+
+  function generateCryptoSalt(length = 16) {
+    const array = new Uint8Array(length);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(array);
+    } else {
+      for (let i = 0; i < length; i++) array[i] = Math.floor(Math.random() * 256);
+    }
+    return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function generateSecureOtp() {
+    const array = new Uint32Array(1);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(array);
+      return String(100000 + (array[0] % 900000));
+    }
+    return String(Math.floor(100000 + Math.random() * 900000));
+  }
+
+  async function hashPasswordWithSalt(password, salt) {
+    const raw = `${salt}:${password}`;
+    if (window.crypto && window.crypto.subtle) {
+      const msgBuffer = new TextEncoder().encode(raw);
+      const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    // Fallback deterministic hash if SubtleCrypto is unavailable in non-HTTPS frame
+    let h1 = 0xdeadbeef ^ raw.length, h2 = 0x41c6ce57 ^ raw.length;
+    for (let i = 0, ch; i < raw.length; i++) {
+      ch = raw.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (h2 >>> 0).toString(16).padStart(8, '0') + (h1 >>> 0).toString(16).padStart(8, '0');
+  }
+
+  /* --------------------------------------------------------------------------
+     1. SVG / ILLUSTRATION GENERATOR FOR REALISTIC MULTI-ANGLE PRODUCT PHOTOS
+  -------------------------------------------------------------------------- */
+  function createProductVisual(title, subtitle, badgeText, bgPrimary, bgSecondary, emojiIcon, angleLabel) {
+    const safeTitle = escapeHtml(title);
+    const safeSubtitle = escapeHtml(subtitle);
+    const safeBadge = escapeHtml(badgeText);
+    const safeEmoji = escapeHtml(emojiIcon);
+    const safeAngle = escapeHtml(angleLabel);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+      <defs>
+        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${bgPrimary}"/>
+          <stop offset="100%" stop-color="${bgSecondary}"/>
+        </linearGradient>
+      </defs>
+      <rect width="500" height="500" fill="url(#g)"/>
+      <circle cx="420" cy="80" r="110" fill="#ffffff" fill-opacity="0.08"/>
+      <circle cx="70" cy="430" r="140" fill="#ffffff" fill-opacity="0.06"/>
+      <rect x="45" y="45" width="410" height="410" rx="34" fill="#ffffff" fill-opacity="0.95" stroke="#ffffff" stroke-width="3"/>
+      <rect x="75" y="72" width="175" height="36" rx="18" fill="${bgPrimary}" fill-opacity="0.13"/>
+      <text x="162" y="96" font-family="Tahoma, sans-serif" font-size="15" font-weight="bold" fill="${bgPrimary}" text-anchor="middle">${safeBadge}</text>
+      <circle cx="250" cy="215" r="74" fill="${bgPrimary}" fill-opacity="0.1"/>
+      <text x="250" y="242" font-size="82" text-anchor="middle">${safeEmoji}</text>
+      <text x="250" y="335" font-family="Tahoma, sans-serif" font-size="24" font-weight="bold" fill="#17231e" text-anchor="middle">${safeTitle}</text>
+      <text x="250" y="370" font-family="Tahoma, sans-serif" font-size="16" fill="#5c6f65" text-anchor="middle">${safeSubtitle}</text>
+      <rect x="95" y="395" width="310" height="36" rx="12" fill="#f3f8f4" stroke="#d5e5dc" stroke-width="1"/>
+      <text x="250" y="419" font-family="Tahoma, sans-serif" font-size="14" font-weight="bold" fill="#116747" text-anchor="middle">📷 ${safeAngle}</text>
+    </svg>`;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  }
+
+  /* --------------------------------------------------------------------------
+     2. INITIAL COMMUNITY PRODUCTS DATA (Clean tags without rennet or price)
+  -------------------------------------------------------------------------- */
+  const INITIAL_PRODUCTS = [
+    {
+      id: 'p1',
+      name: 'رز محمود بسمتي طويل الحبة (Mahmood Rice)',
+      category: 'الرز والحبوب',
+      country: '',
+      store: 'محل عربي / تركي',
+      rating: 4.9,
+      helpfulCount: 38,
+      HelpfulClicked: false,
+      tags: ['طعم ممتاز ✨', 'مناسب للطبخ 🍲', 'أنصح بتجربته 👍'],
+      photos: [
+        {
+          url: createProductVisual('Mahmood Basmati Rice', 'رز محمود بسمتي سيلا 1121', 'الرز والحبوب', '#16845d', '#0d553e', '🌾', 'واجهة الكيس (5 كغ)'),
+          caption: 'واجهة العبوة — كيس 5 كغ'
+        },
+        {
+          url: createProductVisual('المكونات وطريقة النقع', '100% أرز بسمتي طويل الحبة', 'معلومات العبوة', '#1d6b87', '#104559', '📋', 'الظهر وتعليمات الطبخ'),
+          caption: 'خلف العبوة — ينصح بنقعه 25 دقيقة بماء فاتر قبل الطبخ'
+        },
+        {
+          url: createProductVisual('النتيجة بعد طبخ الكبسة', 'حبة طويلة ونثرية 100%', 'تجربة المطبخ', '#b86b1b', '#7d440b', '🍛', 'النتيجة بعد الطبخ'),
+          caption: 'النتيجة بعد طبخ الكبسة والمندي — كل حبة بحبتها'
+        }
+      ],
+      reviews: [
+        {
+          author: 'أحمد العلي',
+          rating: 5,
+          date: 'منذ يومين',
+          comment: 'أفضل رز جربته للكبسة والمندي! السر إنه تنقعوه بماء دافئ نص ساعة وتغسلوه لحتى تصفى المي، لكل كاسة رز كاسة ونص مرقة، بيطلع نثري ومستحيل يعجن.'
+        },
+        {
+          author: 'أم خالد',
+          rating: 5,
+          date: 'منذ 5 أيام',
+          comment: 'دائماً بشتريه من المحلات العربية والتركية، جودته ثابتة وممتاز جداً للمقلوبة والبرياني.'
+        }
+      ]
+    },
+    {
+      id: 'p2',
+      name: 'قشطة طازجة للحلويات (Schmand / Crème Fraîche)',
+      category: 'الألبان',
+      country: '',
+      store: 'REWE',
+      rating: 4.8,
+      helpfulCount: 44,
+      HelpfulClicked: false,
+      tags: ['بديل ناجح 🔄', 'مكونات واضحة 📋', 'طعم ممتاز ✨'],
+      photos: [
+        {
+          url: createProductVisual('Schmand 24% Fett', 'قشطة شماند طازجة للحلويات', 'الألبان', '#16845d', '#0f5c41', '🥣', 'واجهة العبوة'),
+          caption: 'واجهة علبة Schmand في قسم المبردات'
+        },
+        {
+          url: createProductVisual('المكونات: قشطة مبسترة فقط', 'خالي من الجيلاتين والمواد الحافظة', 'فحص المكونات ✓', '#2563eb', '#1e40af', '🔍', 'قائمة المكونات من الخلف'),
+          caption: 'المكونات صافية 100% بدون أي إضافات'
+        },
+        {
+          url: createProductVisual('خلطة القشطة البيتية للبسبوسة', 'مع حليب وسميد أو نشا', 'النتيجة بالحلويات', '#d97706', '#92400e', '🥮', 'النتيجة داخل الكنافة والبسبوسة'),
+          caption: 'بعد خلطها مع قشطة مطبوخة في البسبوسة والقطايف'
+        }
+      ],
+      reviews: [
+        {
+          author: 'سارة حمزة',
+          rating: 5,
+          date: 'منذ 3 أيام',
+          comment: 'أحسن بديل للقشطة العربية! بخلط علبة Schmand مع كاسة حليب وملعقتين سميد أو نشا عالنار ومية زهر، بتطلع قشطة فاخرة للكنافة والقطايف وحلاوة الجبن.'
+        },
+        {
+          author: 'نور',
+          rating: 5,
+          date: 'منذ أسبوع',
+          comment: 'طعمها قريب جداً للقشطة البلدية لما تنخلط مع شوية ماسكاربوني للحلويات الباردة.'
+        }
+      ]
+    },
+    {
+      id: 'p3',
+      name: 'جبنة غودا شرائح (Milbona Gouda Jong)',
+      category: 'الأجبان',
+      country: '',
+      store: 'Lidl',
+      rating: 4.7,
+      helpfulCount: 31,
+      HelpfulClicked: false,
+      tags: ['مكونات واضحة 📋', 'طعم ممتاز ✨', 'جودة عالية ⭐'],
+      photos: [
+        {
+          url: createProductVisual('Milbona Gouda Jong', 'جبنة غودا شرائح طرية', 'الأجبان', '#0e7490', '#155e75', '🧀', 'واجهة العبوة'),
+          caption: 'عبوة جبنة غودا الشرائح من ماركة Milbona'
+        },
+        {
+          url: createProductVisual('جدول المكونات الخلفي', 'مكونات نباتية واضحة على العبوة', 'مكونات واضحة ✓', '#16845d', '#116747', '✅', 'صورة جدول المكونات'),
+          caption: 'صورة المكونات الخلفية بوضوح'
+        },
+        {
+          url: createProductVisual('فطور وسندويشات التوست', 'بتذوب بسرعة وطعمها خفيف', 'تجربة التقديم', '#ca8a04', '#854d0e', '🥪', 'النتيجة في التوست الساخن'),
+          caption: 'ممتازة لفطور الأولاد وللتوست المحمص'
+        }
+      ],
+      reviews: [
+        {
+          author: 'عمر خطيب',
+          rating: 5,
+          date: 'منذ 4 أيام',
+          comment: 'طعمها كريمي ومو مالح أبداً، وبتذوب بسرعة بالتوست الصباحي.'
+        },
+        {
+          author: 'رنا',
+          rating: 4,
+          date: 'منذ أسبوعين',
+          comment: 'العلبة حجمها ممتاز وبتقعد أسبوعين بالبراد لأنها بتتسكر بسهولة، الأولاد بحبوها كتير عالفطور.'
+        }
+      ]
+    },
+    {
+      id: 'p4',
+      name: 'لبن زبادي يوناني / تركي كامل الدسم (10% دسم)',
+      category: 'الألبان',
+      country: '',
+      store: 'Albert Heijn',
+      rating: 4.9,
+      helpfulCount: 27,
+      HelpfulClicked: false,
+      tags: ['مناسب للطبخ 🍲', 'جودة عالية ⭐', 'أنصح بتجربته 👍'],
+      photos: [
+        {
+          url: createProductVisual('Griekse Yoghurt 10%', 'زبادي يوناني / تركي كامل الدسم', 'الألبان', '#0284c7', '#0369a1', '🥛', 'واجهة السطل (10% دسم)'),
+          caption: 'لبن زبادي دسم 10% بقوام كريمي ثقيل'
+        },
+        {
+          url: createProductVisual('بدون مثخنات إضافية', 'حليب مبستر وخمائر لبنية فقط', 'المكونات الخلفية', '#16845d', '#116747', '🌿', 'المكونات من الخلف'),
+          caption: 'طبيعي 100% ومناسب للطبخ والفتات'
+        },
+        {
+          url: createProductVisual('شاكريه وشيخ المحشي والفتة', 'قوام متماسك ومثالي للطبخ', 'تجربة الطبخ', '#0f766e', '#115e59', '🍲', 'النتيجة بعد طبخ الشاكريه'),
+          caption: 'رائع لطبخ الشاكريه والكبة اللبنية والفتة الشامية'
+        }
+      ],
+      reviews: [
+        {
+          author: 'ديما الشامي',
+          rating: 5,
+          date: 'منذ 3 أيام',
+          comment: 'إذا بدكم تطبخوا شاكريه أو كوسا بلبن، خذوا دائماً اللي مكتوب عليه 10% دسم مع ملعقة نشا صغيرة، بيطلع قوامه متماسك وما بيفرط أبداً!'
+        }
+      ]
+    },
+    {
+      id: 'p5',
+      name: 'رقائق عجينة البقلاوة والكنافة (Yufka / Filo)',
+      category: 'الحلويات',
+      country: '',
+      store: 'Aldi',
+      rating: 4.6,
+      helpfulCount: 19,
+      HelpfulClicked: false,
+      tags: ['مناسب للطبخ 🍲', 'جودة عالية ⭐', 'طعم ممتاز ✨'],
+      photos: [
+        {
+          url: createProductVisual('Filo- & Strudelteig', 'رقائق عجينة فيلو للبقلاوة والسمبوسك', 'الحلويات', '#9333ea', '#6b21a8', '🥟', 'واجهة العبوة في قسم المبردات'),
+          caption: 'رقائق عجينة الفيلو الطازجة في قسم المبردات'
+        },
+        {
+          url: createProductVisual('نباتي Vegan 100%', 'طحين، ماء، نشا فقط', 'فحص المكونات', '#16845d', '#116747', '🌱', 'علامة Vegan والمكونات'),
+          caption: 'مكونات نباتية واضحة ومناسبة للحلويات الشرقية'
+        },
+        {
+          url: createProductVisual('وربات بالقشطة وبقلاوة منزلية', 'ذهبية ومقرمشة مع السمنة', 'النتيجة من الفرن', '#ea580c', '#9a3412', '🍯', 'النتيجة بعد الخبز بالفرن'),
+          caption: 'عملت فيها وربات بالقشطة والفستق الحلبي وطلعت مقرمشة جداً'
+        }
+      ],
+      reviews: [
+        {
+          author: 'خالد المنصور',
+          rating: 5,
+          date: 'منذ 6 أيام',
+          comment: 'عجينة ممتازة للوربات بالقشطة وللبقلاوة وحتى للسمبوسك بالفرن. بس انتبهوا تغطوها بفوطة مطبخ رطبة وإنتو عم تشتغلوا فيها لأنها رقيقة.'
+        }
+      ]
+    },
+    {
+      id: 'p6',
+      name: 'صوص البطاطا الأصفر المقرمش (Joppie Saus)',
+      category: 'الصوصات',
+      country: '',
+      store: 'Jumbo',
+      rating: 4.5,
+      helpfulCount: 22,
+      HelpfulClicked: false,
+      tags: ['طعم ممتاز ✨', 'أنصح بتجربته 👍'],
+      photos: [
+        {
+          url: createProductVisual('Elite Joppie Saus', 'الصوص الأصفر الشهير للبطاطا', 'الصوصات', '#eab308', '#ca8a04', '🍟', 'واجهة العبوة'),
+          caption: 'عبوة صوص Joppie الشهير'
+        },
+        {
+          url: createProductVisual('المكونات: مايونيز، بصل، كاري', 'طعم حلو وحادق مع قرمشة بصل', 'جدول المكونات', '#475569', '#334155', '📑', 'تفاصيل المكونات'),
+          caption: 'مزيج المايونيز مع البصل المفروم ناعماً وتوابل الكاري الخفيفة'
+        },
+        {
+          url: createProductVisual('مع البطاطا المقلية والكريسبي', 'إضافة رهيبة بجانب الشاورما والبرغر', 'طريقة التقديم', '#dc2626', '#991b1b', '🍔', 'التقديم مع البطاطا'),
+          caption: 'لذيذ جداً مع البطاطا المقلية المنزلية وسندويشات الكريسبي'
+        }
+      ],
+      reviews: [
+        {
+          author: 'طارق',
+          rating: 5,
+          date: 'منذ أسبوع',
+          comment: 'بعد ما جربته مع البطاطا المقلية والبرغر بالبيت صار أساسي بالبراد! طعمه فيه كاري خفيف وبصل مقرمش.'
+        }
+      ]
+    }
+  ];
+
+  /* --------------------------------------------------------------------------
+     3. STATE MANAGEMENT & LOCALSTORAGE SYNC
+  -------------------------------------------------------------------------- */
+  let products = [];
+  let savedIds = [];
+  let registeredUsers = [];
+  let currentUser = null;
+
+  // Password Reset & Rate-Limiting Security State
+  let pendingResetState = {
+    email: '',
+    otp: '',
+    expiresAt: 0,
+    attempts: 0
+  };
+  let loginFailedAttempts = 0;
+  let loginLockoutUntil = 0;
+  let loginLockoutTimer = null;
+
+  // Filter States (Category only in Browse & Search)
+  let activeCategory = 'all';
+  let currentModalProductId = null;
+
+  // Add Product Form State (Prototype 1 Merged)
+  let selectedFilesDataUrls = [];
+  let selectedStarRating = 5;
+  let selectedQuickTags = ['طعم ممتاز ✨'];
+
+  // Initialize from localStorage or default
+  function initAppState() {
+    try {
+      const storedProducts = localStorage.getItem('akli_products_v2');
+      if (storedProducts) {
+        products = JSON.parse(storedProducts);
+      } else {
+        products = INITIAL_PRODUCTS;
+        localStorage.setItem('akli_products_v2', JSON.stringify(products));
+      }
+
+      const storedSaved = localStorage.getItem('akli_saved_v2');
+      if (storedSaved) {
+        savedIds = JSON.parse(storedSaved);
+      }
+
+      const storedUsers = localStorage.getItem('akli_users_v2');
+      if (storedUsers) {
+        registeredUsers = JSON.parse(storedUsers);
+      }
+
+      const storedCurrentUser = localStorage.getItem('akli_current_user_v2');
+      if (storedCurrentUser) {
+        currentUser = JSON.parse(storedCurrentUser);
+      }
+    } catch (e) {
+      products = INITIAL_PRODUCTS;
+    }
+
+    updateHeaderCounters();
+    updateAuthUI();
+    renderProductsFeed();
+    renderSavedProducts();
+    selectRating(5);
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem('akli_products_v2', JSON.stringify(products));
+      localStorage.setItem('akli_saved_v2', JSON.stringify(savedIds));
+      localStorage.setItem('akli_users_v2', JSON.stringify(registeredUsers));
+      if (currentUser) {
+        localStorage.setItem('akli_current_user_v2', JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem('akli_current_user_v2');
+      }
+    } catch (e) {
+      // Ignore quota errors if large images uploaded
+    }
+    updateHeaderCounters();
+  }
+
+  function updateHeaderCounters() {
+    document.getElementById('navTotalCount').textContent = products.length;
+    document.getElementById('navSavedCount').textContent = savedIds.length;
+    const statSaved = document.getElementById('statUserSaved');
+    if (statSaved) statSaved.textContent = savedIds.length;
+    const statTotal = document.getElementById('statTotalCommunity');
+    if (statTotal) statTotal.textContent = products.length;
+  }
+
+  /* --------------------------------------------------------------------------
+     4. VIEW NAVIGATION LOGIC (SPA TABS SWITCHER)
+  -------------------------------------------------------------------------- */
+  function switchView(viewName) {
+    document.querySelectorAll('.view-section').forEach(sec => {
+      sec.classList.remove('active');
+    });
+    const targetSection = document.getElementById('view-' + viewName);
+    if (targetSection) {
+      targetSection.classList.add('active');
+    }
+
+    document.querySelectorAll('.nav-btn, .mobile-nav-item').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-tab') === viewName);
+    });
+
+    if (viewName === 'explore') {
+      renderProductsFeed();
+    } else if (viewName === 'saved') {
+      renderSavedProducts();
+    } else if (viewName === 'auth') {
+      updateAuthUI();
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* --------------------------------------------------------------------------
+     5. EXPLORE, SEARCH & FILTER LOGIC (Category & Search Only)
+  -------------------------------------------------------------------------- */
+  function setCategoryFilter(cat) {
+    activeCategory = cat;
+    document.querySelectorAll('[data-cat]').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
+    });
+    handleSearchAndFilter();
+  }
+
+  function setQuickSearch(term) {
+    const input = document.getElementById('searchInput');
+    input.value = term;
+    handleSearchAndFilter();
+  }
+
+  function clearSearchInput() {
+    document.getElementById('searchInput').value = '';
+    handleSearchAndFilter();
+  }
+
+  function resetAllFilters() {
+    document.getElementById('searchInput').value = '';
+    setCategoryFilter('all');
+    document.getElementById('sortSelect').value = 'newest';
+    handleSearchAndFilter();
+  }
+
+  function handleSearchAndFilter() {
+    const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    document.getElementById('clearSearchBtn').classList.toggle('hidden', query.length === 0);
+
+    const hasAnyFilter = query.length > 0 || activeCategory !== 'all';
+    document.getElementById('resetFiltersBtn').classList.toggle('hidden', !hasAnyFilter);
+
+    renderProductsFeed();
+  }
+
+  function renderProductsFeed() {
+    const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    const sortBy = document.getElementById('sortSelect').value;
+
+    let filtered = products.filter(p => {
+      if (activeCategory !== 'all' && p.category !== activeCategory) {
+        return false;
+      }
+      if (query) {
+        const hay = [
+          p.name,
+          p.category,
+          ...(p.tags || []),
+          ...(p.reviews || []).map(r => r.comment + ' ' + r.author)
+        ].join(' ').toLowerCase();
+        if (!hay.includes(query)) return false;
+      }
+      return true;
+    });
+
+    if (sortBy === 'rating') {
+      filtered.sort((a, b) => b.rating - a.rating);
+    } else if (sortBy === 'helpful') {
+      filtered.sort((a, b) => b.helpfulCount - a.helpfulCount);
+    } else if (sortBy === 'reviews') {
+      filtered.sort((a, b) => (b.reviews ? b.reviews.length : 0) - (a.reviews ? a.reviews.length : 0));
+    }
+
+    const grid = document.getElementById('productsGrid');
+    const emptyState = document.getElementById('emptySearchState');
+    const summaryText = document.getElementById('resultsSummaryText');
+
+    summaryText.textContent = `عرض ${filtered.length} من أصل ${products.length} منتج وتجربة موثقة`;
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '';
+      emptyState.classList.remove('hidden');
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    grid.innerHTML = filtered.map(p => buildProductCardHTML(p)).join('');
+  }
+
+  function buildProductCardHTML(p) {
+    const safeId = escapeHtml(p.id);
+    const safeName = escapeHtml(p.name);
+    const safeCategory = escapeHtml(p.category);
+    const safeCountry = escapeHtml(p.country || '');
+    const safeStore = escapeHtml(p.store || '');
+    const isSaved = savedIds.includes(p.id);
+    const topReview = (p.reviews && p.reviews.length > 0) ? p.reviews[0] : { author: 'عضو في أكلي', comment: 'منتج مجرب وموصى به.' };
+    const safeAuthor = escapeHtml(topReview.author);
+    const safeComment = escapeHtml(topReview.comment);
+    const mainPhoto = (p.photos && p.photos.length > 0) ? sanitizeImageUrl(p.photos[0].url) : '';
+    const photoCount = p.photos ? p.photos.length : 1;
+
+    return `
+      <article class="product-card">
+        <!-- Image Area -->
+        <div class="relative aspect-[16/11] bg-[#edf5f0] overflow-hidden cursor-pointer group" onclick="openProductModal('${safeId}')">
+          <img src="${mainPhoto}" alt="${safeName}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          
+          <!-- Top Overlays -->
+          <div class="absolute top-3 right-3 left-3 flex items-center justify-between gap-2">
+            ${safeCountry ? `
+              <span class="bg-white/95 backdrop-blur-xs text-[#17231e] text-xs font-extrabold px-2.5 py-1 rounded-full shadow-xs">
+                📍 ${safeCountry}
+              </span>
+            ` : `<span></span>`}
+            <span class="bg-[#17231e]/80 backdrop-blur-xs text-white text-xs font-bold px-2.5 py-1 rounded-full">
+              📷 ${photoCount} صور
+            </span>
+          </div>
+
+          <!-- Bottom Optional Store Overlay -->
+          ${safeStore ? `
+            <div class="absolute bottom-2.5 right-3 left-3 flex items-center justify-between">
+              <span class="bg-[#16845d] text-white text-xs font-extrabold px-3 py-1 rounded-lg shadow-xs">
+                🛒 ${safeStore}
+              </span>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Card Body -->
+        <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <!-- Category & Rating Row -->
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-bold text-[#6c7b73] bg-[#f3f8f4] px-2.5 py-0.5 rounded-md border border-[#e3ebe6]">
+                ${safeCategory}
+              </span>
+              <div class="flex items-center gap-1 text-xs font-extrabold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                <span>⭐ ${Number(p.rating).toFixed(1)}</span>
+                <span class="text-[#6c7b73] font-normal">(${p.reviews ? p.reviews.length : 1} تجارب)</span>
+              </div>
+            </div>
+
+            <!-- Product Title -->
+            <h2 onclick="openProductModal('${safeId}')" class="text-base sm:text-lg font-extrabold text-[#17231e] hover:text-[#16845d] cursor-pointer leading-snug m-0 mb-2.5">
+              ${safeName}
+            </h2>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 mb-3.5">
+              ${(p.tags || []).slice(0, 3).map(tag => `
+                <span class="text-[11px] font-bold bg-[#eaf6f0] text-[#116747] px-2.5 py-0.5 rounded-full">
+                  ${escapeHtml(tag)}
+                </span>
+              `).join('')}
+            </div>
+
+            <!-- Top Community Experience Snippet -->
+            <div onclick="openProductModal('${safeId}')" class="bg-[#f8fbf9] border border-[#e3ebe6] rounded-xl p-3 mb-4 cursor-pointer hover:border-[#bdd9c9] transition">
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="font-extrabold text-[#116747]">👤 ${safeAuthor}</span>
+                <span class="text-[11px] text-[#6c7b73]">تجربة موثقة</span>
+              </div>
+              <p class="text-xs text-[#17231e] leading-relaxed m-0 line-clamp-3">
+                "${safeComment}"
+              </p>
+            </div>
+          </div>
+
+          <!-- Card Footer Actions -->
+          <div class="flex items-center gap-2 pt-3 border-t border-[#e3ebe6]">
+            <button type="button" onclick="toggleHelpful('${safeId}')" class="px-3 py-2 rounded-xl text-xs font-bold border transition cursor-pointer flex items-center gap-1 ${p.HelpfulClicked ? 'bg-[#eaf6f0] border-[#16845d] text-[#116747]' : 'bg-white border-[#e3ebe6] text-[#6c7b73] hover:text-[#17231e]'}">
+              <span>👍</span>
+              <span>${Number(p.helpfulCount) || 0}</span>
+            </button>
+
+            <button type="button" onclick="toggleBookmark('${safeId}')" class="px-3 py-2 rounded-xl text-xs font-bold border transition cursor-pointer flex items-center gap-1 ${isSaved ? 'bg-amber-50 border-amber-300 text-amber-900' : 'bg-white border-[#e3ebe6] text-[#6c7b73] hover:text-[#17231e]'}">
+              <span>🔖</span>
+              <span>${isSaved ? 'محفوظ' : 'حفظ'}</span>
+            </button>
+
+            <button type="button" onclick="openProductModal('${safeId}')" class="flex-1 bg-[#16845d] hover:bg-[#116747] text-white text-xs font-bold py-2.5 px-3 rounded-xl transition cursor-pointer text-center">
+              التفاصيل (${p.reviews ? p.reviews.length : 1})
+            </button>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  /* --------------------------------------------------------------------------
+     6. HELPFUL VOTE & BOOKMARK LOGIC
+  -------------------------------------------------------------------------- */
+  function toggleHelpful(productId) {
+    const p = products.find(item => item.id === productId);
+    if (!p) return;
+    p.HelpfulClicked = !p.HelpfulClicked;
+    p.helpfulCount += p.HelpfulClicked ? 1 : -1;
+    saveState();
+    renderProductsFeed();
+    renderSavedProducts();
+    if (currentModalProductId === productId) {
+      refreshModalButtons(p);
+    }
+    showToast(p.HelpfulClicked ? 'شكراً! تم تسجيل أن هذه التجربة أفادتك 👍' : 'تم إلغاء التصويت');
+  }
+
+  function toggleBookmark(productId) {
+    const idx = savedIds.indexOf(productId);
+    if (idx === -1) {
+      savedIds.push(productId);
+      showToast('تم حفظ المنتج في قائمتك 🔖');
+    } else {
+      savedIds.splice(idx, 1);
+      showToast('تمت إزالة المنتج من المحفوظات');
+    }
+    saveState();
+    renderProductsFeed();
+    renderSavedProducts();
+    if (currentModalProductId === productId) {
+      const p = products.find(item => item.id === productId);
+      if (p) refreshModalButtons(p);
+    }
+  }
+
+  function renderSavedProducts() {
+    const grid = document.getElementById('savedProductsGrid');
+    const empty = document.getElementById('emptySavedState');
+    const savedList = products.filter(p => savedIds.includes(p.id));
+
+    if (savedList.length === 0) {
+      grid.innerHTML = '';
+      empty.classList.remove('hidden');
+      return;
+    }
+
+    empty.classList.add('hidden');
+    grid.innerHTML = savedList.map(p => buildProductCardHTML(p)).join('');
+  }
+
+  /* --------------------------------------------------------------------------
+     7. PRODUCT DETAILS & MULTI-REVIEW MODAL
+  -------------------------------------------------------------------------- */
+  function openProductModal(productId) {
+    const p = products.find(item => item.id === productId);
+    if (!p) return;
+    currentModalProductId = productId;
+
+    document.getElementById('modalCategoryBadge').textContent = p.category;
+
+    const storeBadge = document.getElementById('modalStoreBadge');
+    if (p.store) {
+      storeBadge.textContent = '🛒 ' + p.store;
+      storeBadge.classList.remove('hidden');
+    } else {
+      storeBadge.classList.add('hidden');
+    }
+
+    const countryBadge = document.getElementById('modalCountryBadge');
+    if (p.country) {
+      countryBadge.textContent = '📍 ' + p.country;
+      countryBadge.classList.remove('hidden');
+    } else {
+      countryBadge.classList.add('hidden');
+    }
+
+    document.getElementById('modalProductName').textContent = p.name;
+    document.getElementById('modalRatingValue').textContent = Number(p.rating).toFixed(1);
+    document.getElementById('modalReviewsCountText').textContent = `بناءً على ${p.reviews.length} تجارب من المجتمع`;
+    document.getElementById('modalExperiencesBadge').textContent = p.reviews.length;
+
+    // Tags
+    document.getElementById('modalTagsList').innerHTML = (p.tags || []).map(t => `
+      <span class="text-xs font-bold bg-[#eaf6f0] text-[#116747] px-3 py-1 rounded-full">${escapeHtml(t)}</span>
+    `).join('');
+
+    // Summary tip
+    document.getElementById('modalSummaryText').textContent = p.reviews[0] ? p.reviews[0].comment : '';
+
+    // Gallery
+    const photos = (p.photos && p.photos.length > 0) ? p.photos : [
+      { url: createProductVisual(p.name, p.category, p.category, '#16845d', '#116747', '🍽️', 'صورة المنتج'), caption: 'صورة المنتج' }
+    ];
+    setModalActivePhoto(0, photos);
+
+    // Pre-fill reviewer name if logged in
+    if (currentUser) {
+      document.getElementById('modalReviewerName').value = currentUser.city
+        ? `${currentUser.name} — ${currentUser.city}`
+        : currentUser.name;
+    }
+
+    refreshModalButtons(p);
+    renderModalReviews(p);
+
+    document.getElementById('productModal').classList.remove('hidden');
+  }
+
+  function setModalActivePhoto(index, photosArray) {
+    const p = products.find(item => item.id === currentModalProductId);
+    const photos = photosArray || (p ? p.photos : []);
+    if (!photos || !photos[index]) return;
+
+    document.getElementById('modalMainImage').src = sanitizeImageUrl(photos[index].url);
+    document.getElementById('modalImageCaption').textContent = photos[index].caption || ('زاوية الصورة ' + (index + 1));
+
+    const thumbsContainer = document.getElementById('modalThumbnails');
+    thumbsContainer.innerHTML = photos.map((ph, idx) => `
+      <button type="button" onclick="setModalActivePhoto(${idx})" class="rounded-xl overflow-hidden border-2 aspect-square cursor-pointer transition ${idx === index ? 'border-[#16845d] scale-[1.02]' : 'border-transparent opacity-70 hover:opacity-100'}">
+        <img src="${sanitizeImageUrl(ph.url)}" alt="صورة ${idx + 1}" class="w-full h-full object-cover">
+      </button>
+    `).join('');
+  }
+
+  function refreshModalButtons(p) {
+    const isSaved = savedIds.includes(p.id);
+    const helpfulBtn = document.getElementById('modalHelpfulBtn');
+    const bookmarkBtn = document.getElementById('modalBookmarkBtn');
+
+    helpfulBtn.onclick = () => toggleHelpful(p.id);
+    bookmarkBtn.onclick = () => toggleBookmark(p.id);
+
+    document.getElementById('modalHelpfulText').textContent = `أفادني (${p.helpfulCount})`;
+    document.getElementById('modalBookmarkText').textContent = isSaved ? 'محفوظ في قائمتي ✓' : 'حفظ في قائمتي';
+  }
+
+  function renderModalReviews(p) {
+    const list = document.getElementById('modalReviewsList');
+    list.innerHTML = (p.reviews || []).map(r => {
+      const safeRating = Math.min(5, Math.max(1, parseInt(r.rating, 10) || 5));
+      return `
+      <div class="bg-[#fcfefc] border border-[#e3ebe6] rounded-2xl p-4">
+        <div class="flex items-center justify-between gap-2 mb-1.5">
+          <div class="font-extrabold text-sm text-[#17231e]">👤 ${escapeHtml(r.author)}</div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+              ${'⭐'.repeat(safeRating)}
+            </span>
+            <span class="text-xs text-[#6c7b73]">${escapeHtml(r.date || 'الآن')}</span>
+          </div>
+        </div>
+        <p class="text-sm text-[#17231e] leading-relaxed m-0">${escapeHtml(r.comment)}</p>
+      </div>
+    `}).join('');
+  }
+
+  function submitModalReview(e) {
+    e.preventDefault();
+    const p = products.find(item => item.id === currentModalProductId);
+    if (!p) return;
+
+    const author = document.getElementById('modalReviewerName').value.trim();
+    const rating = parseInt(document.getElementById('modalReviewerRating').value, 10) || 5;
+    const comment = document.getElementById('modalReviewerComment').value.trim();
+    if (!author || !comment) return;
+
+    p.reviews.unshift({
+      author,
+      rating,
+      date: 'الآن',
+      comment
+    });
+
+    const total = p.reviews.reduce((acc, item) => acc + (item.rating || 5), 0);
+    p.rating = (total / p.reviews.length).toFixed(1);
+
+    document.getElementById('modalReviewerComment').value = '';
+    saveState();
+    openProductModal(p.id);
+    renderProductsFeed();
+    showToast('تمت إضافة تجربتك بنجاح! شكراً لمشاركتك 💬');
+  }
+
+  function closeProductModal() {
+    document.getElementById('productModal').classList.add('hidden');
+    currentModalProductId = null;
+  }
+
+  function handleModalBackdropClick(e) {
+    if (e.target.id === 'productModal') {
+      closeProductModal();
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     8. PROTOTYPE 1 MERGED LOGIC: ADD NEW PRODUCT EXPERIENCE (#postForm)
+  -------------------------------------------------------------------------- */
+  const photosInput = document.getElementById('photos');
+  const previewsBox = document.getElementById('previews');
+  const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+  const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+  const MAX_PHOTOS_COUNT = 4;
+
+  function sanitizeAndCompressImage(file) {
+    return new Promise((resolve, reject) => {
+      if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        reject(new Error('صيغة الملف غير مدعومة. يرجى اختيار صور بصيغة JPG أو PNG أو WebP.'));
+        return;
+      }
+      if (file.size > MAX_IMAGE_SIZE_BYTES) {
+        reject(new Error('حجم الصورة يتجاوز الحد الأقصى المسموح (5 ميجابايت).'));
+        return;
+      }
+
+      const objectUrl = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const maxDim = 900;
+          let width = img.naturalWidth || img.width;
+          let height = img.naturalHeight || img.height;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          // Re-encoding via canvas strips EXIF metadata and compresses size
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          URL.revokeObjectURL(objectUrl);
+          resolve(compressedDataUrl);
+        } catch (err) {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error('تعذر معالجة الصورة المرفوعة.'));
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error('ملف الصورة تالف أو غير صالح.'));
+      };
+      img.src = objectUrl;
+    });
+  }
+
+  function renderPhotoPreviews() {
+    previewsBox.innerHTML = '';
+    selectedFilesDataUrls.forEach((item, index) => {
+      const box = document.createElement('div');
+      box.className = 'thumb';
+      const img = document.createElement('img');
+      img.src = sanitizeImageUrl(item.url);
+      img.alt = 'صورة المنتج ' + (index + 1);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = '×';
+      btn.setAttribute('aria-label', 'حذف الصورة');
+      btn.onclick = () => {
+        selectedFilesDataUrls.splice(index, 1);
+        renderPhotoPreviews();
+      };
+      box.append(img, btn);
+      previewsBox.append(box);
+    });
+  }
+
+  photosInput.addEventListener('change', async () => {
+    const files = Array.from(photosInput.files || []);
+    for (const file of files) {
+      if (selectedFilesDataUrls.length >= MAX_PHOTOS_COUNT) {
+        showToast(`يمكنك إرفاق ${MAX_PHOTOS_COUNT} صور كحد أقصى لكل منتج.`, '⚠️');
+        break;
+      }
+      try {
+        const cleanDataUrl = await sanitizeAndCompressImage(file);
+        selectedFilesDataUrls.push({
+          url: cleanDataUrl,
+          caption: (file.name ? file.name.replace(/\.[^/.]+$/, '') : 'صورة مرفقة للمنتج').slice(0, 60)
+        });
+        renderPhotoPreviews();
+      } catch (err) {
+        showToast(err.message || 'تعذر رفع الصورة', '⚠️');
+      }
+    }
+    photosInput.value = '';
+  });
+
+  function addGeneratedSamplePhoto() {
+    const nameVal = document.getElementById('name').value.trim() || 'منتج غذائي مجرب';
+    const catVal = document.getElementById('category').value || 'منتج غذائي';
+    const sampleUrl = createProductVisual(nameVal, 'صورة توضيحية للمنتج والمكونات', catVal, '#16845d', '#0d553e', '🥘', 'صورة تجريبية مرفقة');
+    selectedFilesDataUrls.push({
+      url: sampleUrl,
+      caption: 'صورة العبوة والمكونات'
+    });
+    renderPhotoPreviews();
+    showToast('تم إرفاق صورة توضيحية للمنتج 📷');
+  }
+
+  function selectRating(stars) {
+    selectedStarRating = stars;
+    const buttons = document.querySelectorAll('#starPicker .star-btn');
+    buttons.forEach((btn, idx) => {
+      btn.style.opacity = idx < stars ? '1' : '0.25';
+      btn.style.transform = idx < stars ? 'scale(1)' : 'scale(0.9)';
+    });
+    const labels = {
+      5: '5 / 5 ممتاز وأنصح به',
+      4: '4 / 5 جيد جداً',
+      3: '3 / 5 مقبول',
+      2: '2 / 5 دون التوقعات',
+      1: '1 / 5 لا أنصح به'
+    };
+    document.getElementById('ratingTextBadge').textContent = labels[stars] || '5 / 5';
+  }
+
+  function toggleQuickTag(btnEl, tagText) {
+    const idx = selectedQuickTags.indexOf(tagText);
+    if (idx === -1) {
+      selectedQuickTags.push(tagText);
+      btnEl.classList.add('border-[#16845d]', 'bg-[#16845d]', 'text-white');
+      btnEl.classList.remove('border-[#e3ebe6]', 'bg-[#fcfefc]');
+    } else {
+      selectedQuickTags.splice(idx, 1);
+      btnEl.classList.remove('border-[#16845d]', 'bg-[#16845d]', 'text-white');
+      btnEl.classList.add('border-[#e3ebe6]', 'bg-[#fcfefc]');
+    }
+  }
+
+  function fillDemoProduct() {
+    document.getElementById('name').value = 'جبنة قشقوان (Kaşar Peyniri)';
+    document.getElementById('category').value = 'الأجبان';
+    document.getElementById('storeInput').value = 'Albert Heijn';
+    document.getElementById('countryInput').value = '';
+    document.getElementById('experience').value = 'ممتازة جداً للمناقيش والسمبوسك والتوست! بتذوب وبتعطي مطة رائعة بالفرن وطعمها قريب جداً للقشقوان البلدي.';
+    selectRating(5);
+    selectedFilesDataUrls = [
+      {
+        url: createProductVisual('Kaşar Peyniri', 'جبنة قشقوان 400 غرام', 'الأجبان', '#16845d', '#0f5c41', '🧀', 'واجهة العبوة'),
+        caption: 'واجهة عبوة جبنة القشقوان'
+      },
+      {
+        url: createProductVisual('مكونات واضحة', 'مناسبة للمناقيش والبيتزا والفطور', 'قائمة المكونات', '#0284c7', '#0369a1', '✅', 'المكونات من الخلف'),
+        caption: 'جدول المكونات من الخلف'
+      }
+    ];
+    renderPhotoPreviews();
+    showToast('تمت تعبئة نموذج تجربة جاهز — يمكنك الضغط على نشر الآن ✨');
+  }
+
+  document.getElementById('postForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const cat = document.getElementById('category').value;
+    const store = document.getElementById('storeInput').value.trim(); // Optional
+    const country = document.getElementById('countryInput').value.trim(); // Optional
+    const exp = document.getElementById('experience').value.trim();
+
+    const photosToSave = selectedFilesDataUrls.length > 0 ? [...selectedFilesDataUrls] : [
+      {
+        url: createProductVisual(name, cat, store || cat, '#16845d', '#0d553e', '🍽️', 'صورة المنتج'),
+        caption: 'صورة المنتج'
+      }
+    ];
+
+    const authorDisplay = currentUser
+      ? (currentUser.city ? `${currentUser.name} — ${currentUser.city}` : currentUser.name)
+      : 'مشارك من مجتمع أكلي';
+
+    const newProduct = {
+      id: 'p_' + Date.now(),
+      name,
+      category: cat,
+      country,
+      store,
+      rating: selectedStarRating,
+      helpfulCount: 1,
+      HelpfulClicked: true,
+      tags: selectedQuickTags.length > 0 ? [...selectedQuickTags] : ['طعم ممتاز ✨'],
+      photos: photosToSave,
+      reviews: [
+        {
+          author: authorDisplay,
+          rating: selectedStarRating,
+          date: 'الآن',
+          comment: exp
+        }
+      ]
+    };
+
+    products.unshift(newProduct);
+    saveState();
+
+    // Update Prototype 1 Preview Result Box
+    const metaParts = [cat, store, country].filter(Boolean).join(' • ');
+    document.getElementById('summary').textContent =
+      `${name} (${metaParts}) | ${exp} | عدد الصور المرفقة: ${photosToSave.length}`;
+
+    const out = document.getElementById('publishedPhotos');
+    out.innerHTML = '';
+    photosToSave.forEach(ph => {
+      const img = document.createElement('img');
+      img.src = ph.url;
+      img.alt = 'صورة مرفقة';
+      img.style.cssText = 'width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;border:1px solid #cce8d6';
+      out.append(img);
+    });
+    document.getElementById('result').style.display = 'block';
+
+    // Reset form inputs
+    document.getElementById('name').value = '';
+    document.getElementById('storeInput').value = '';
+    document.getElementById('countryInput').value = '';
+    document.getElementById('experience').value = '';
+    selectedFilesDataUrls = [];
+    renderPhotoPreviews();
+    renderProductsFeed();
+    showToast('تم نشر تجربتك وإضافتها إلى الصفحة الرئيسية بنجاح! 🎉');
+  });
+
+  /* --------------------------------------------------------------------------
+     9. AUTHENTICATION SYSTEM: SECURE SIGN UP, LOGIN & PASSWORD RESET
+  -------------------------------------------------------------------------- */
+  function showAuthAlert(message, type = 'success') {
+    const box = document.getElementById('authMsg');
+    box.textContent = message;
+    box.classList.remove('hidden', 'bg-[#eef8f1]', 'border-[#cce8d6]', 'text-[#176746]', 'bg-red-50', 'border-red-200', 'text-red-700');
+    if (type === 'error') {
+      box.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
+    } else {
+      box.classList.add('bg-[#eef8f1]', 'border-[#cce8d6]', 'text-[#176746]');
+    }
+  }
+
+  function hideAuthAlert() {
+    const box = document.getElementById('authMsg');
+    if (box) box.classList.add('hidden');
+  }
+
+  function switchAuthTab(mode) {
+    hideAuthAlert();
+
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const resetContainer = document.getElementById('resetFormContainer');
+    const topTabs = document.getElementById('authTopTabs');
+    const socialSection = document.getElementById('socialLoginSection');
+
+    const tabBtnLogin = document.getElementById('tabBtnLogin');
+    const tabBtnSignup = document.getElementById('tabBtnSignup');
+    const heading = document.getElementById('authHeading');
+    const desc = document.getElementById('authDesc');
+
+    loginForm.classList.add('hidden');
+    signupForm.classList.add('hidden');
+    resetContainer.classList.add('hidden');
+
+    if (mode === 'signup') {
+      signupForm.classList.remove('hidden');
+      topTabs.classList.remove('hidden');
+      socialSection.classList.remove('hidden');
+      tabBtnLogin.classList.remove('active');
+      tabBtnSignup.classList.add('active');
+      heading.textContent = 'إنشاء حساب جديد';
+      desc.textContent = 'أنشئ حسابك في ثوانٍ لتبدأ بمشاركة تجارب المنتجات وحفظ مفضلاتك.';
+    } else if (mode === 'reset') {
+      resetContainer.classList.remove('hidden');
+      document.getElementById('resetStep2Form').classList.add('hidden');
+      topTabs.classList.add('hidden');
+      socialSection.classList.add('hidden');
+      heading.textContent = 'استعادة كلمة المرور';
+      desc.textContent = 'أدخل بريدك الإلكتروني وسنرسل لك رمز تحقق لإعادة تعيين كلمة المرور.';
+    } else {
+      loginForm.classList.remove('hidden');
+      topTabs.classList.remove('hidden');
+      socialSection.classList.remove('hidden');
+      tabBtnLogin.classList.add('active');
+      tabBtnSignup.classList.remove('active');
+      heading.textContent = 'أهلاً بعودتك';
+      desc.textContent = 'سجّل الدخول لتشارك تجاربك وتحفظ المنتجات التي تهمك.';
+    }
+  }
+
+  function togglePassVisibility(inputId, btnEl) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      btnEl.textContent = 'إخفاء';
+    } else {
+      input.type = 'password';
+      btnEl.textContent = 'إظهار';
+    }
+  }
+
+  // Handle Sign Up Form Submission (Prevents account overwrite + SHA-256 salted hash)
+  async function handleSignupSubmit(e) {
+    e.preventDefault();
+    hideAuthAlert();
+
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+    const city = document.getElementById('signupCity').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const confirmPassword = document.getElementById('signupPasswordConfirm').value;
+
+    if (!name || !email || !password) {
+      showAuthAlert('يرجى تعبئة جميع الحقول المطلوبة.', 'error');
+      return;
+    }
+
+    if (password.length < 6) {
+      showAuthAlert('يجب أن تتكون كلمة المرور من 6 أحرف أو أرقام على الأقل.', 'error');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      showAuthAlert('كلمتا المرور غير متطابقتين! يرجى التأكد من كتابة نفس كلمة المرور في الحقلين.', 'error');
+      return;
+    }
+
+    const existingIdx = registeredUsers.findIndex(u => u.email.toLowerCase() === email);
+    if (existingIdx !== -1) {
+      showAuthAlert('هذا البريد الإلكتروني مسجل بالفعل! يرجى تسجيل الدخول أو استخدام استعادة كلمة المرور.', 'error');
+      return;
+    }
+
+    const salt = generateCryptoSalt(16);
+    const passwordHash = await hashPasswordWithSalt(password, salt);
+
+    const newUserObj = {
+      name,
+      email,
+      city,
+      salt,
+      passwordHash
+    };
+
+    registeredUsers.push(newUserObj);
+
+    currentUser = {
+      name: newUserObj.name,
+      email: newUserObj.email,
+      city: newUserObj.city
+    };
+
+    document.getElementById('signupForm').reset();
+    saveState();
+    updateAuthUI();
+    showToast(`تم إنشاء حسابك بنجاح! أهلاً بك يا ${currentUser.name} 🎉`);
+  }
+
+  function startLoginLockoutCountdown() {
+    const submitBtn = document.getElementById('loginSubmitBtn');
+    if (loginLockoutTimer) clearInterval(loginLockoutTimer);
+
+    const updateLockUI = () => {
+      const remainingSec = Math.ceil((loginLockoutUntil - Date.now()) / 1000);
+      if (remainingSec <= 0) {
+        clearInterval(loginLockoutTimer);
+        loginLockoutTimer = null;
+        loginFailedAttempts = 0;
+        loginLockoutUntil = 0;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'تسجيل الدخول';
+        }
+        hideAuthAlert();
+      } else {
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = `يرجى الانتظار (${remainingSec} ثانية)...`;
+        }
+        showAuthAlert(`تم إيقاف المحاولات مؤقتاً لحماية الحساب. يرجى المحاولة بعد ${remainingSec} ثانية.`, 'error');
+      }
+    };
+
+    updateLockUI();
+    loginLockoutTimer = setInterval(updateLockUI, 1000);
+  }
+
+  // Handle Login Form Submission (With rate limiting & SHA-256 verification)
+  async function handleLoginSubmit(e) {
+    e.preventDefault();
+    hideAuthAlert();
+
+    if (Date.now() < loginLockoutUntil) {
+      startLoginLockoutCountdown();
+      return;
+    }
+
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+      showAuthAlert('يرجى إدخال البريد الإلكتروني وكلمة المرور.', 'error');
+      return;
+    }
+
+    const foundUser = registeredUsers.find(u => u.email.toLowerCase() === email);
+    if (foundUser) {
+      let isValid = false;
+      if (foundUser.passwordHash && foundUser.salt) {
+        const computedHash = await hashPasswordWithSalt(password, foundUser.salt);
+        isValid = (computedHash === foundUser.passwordHash);
+      } else if (foundUser.password) {
+        // Backward compatibility for legacy stored accounts, then upgrade hash
+        isValid = (foundUser.password === password);
+        if (isValid) {
+          foundUser.salt = generateCryptoSalt(16);
+          foundUser.passwordHash = await hashPasswordWithSalt(password, foundUser.salt);
+          delete foundUser.password;
+        }
+      }
+
+      if (!isValid) {
+        loginFailedAttempts += 1;
+        if (loginFailedAttempts >= 5) {
+          loginLockoutUntil = Date.now() + 30000;
+          startLoginLockoutCountdown();
+          return;
+        }
+        showAuthAlert(`كلمة المرور غير صحيحة (محاولة ${loginFailedAttempts} من 5). يمكنك الضغط على "نسيت كلمة المرور؟" لاستعادتها.`, 'error');
+        return;
+      }
+    }
+
+    loginFailedAttempts = 0;
+    const fallbackName = email.split('@')[0] || 'عضو أكلي';
+    currentUser = foundUser
+      ? { name: foundUser.name, email: foundUser.email, city: foundUser.city || '' }
+      : { name: fallbackName, email, city: '' };
+
+    document.getElementById('loginForm').reset();
+    saveState();
+    updateAuthUI();
+    showToast(`أهلاً بعودتك يا ${currentUser.name}! 👋`);
+  }
+
+  // Handle Password Reset Step 1 (Dynamic 6-digit CSPRNG OTP with 3-min expiry)
+  function handleResetStep1(e) {
+    e.preventDefault();
+    const email = document.getElementById('resetEmail').value.trim().toLowerCase();
+    if (!email) return;
+
+    const otpCode = generateSecureOtp();
+    pendingResetState = {
+      email,
+      otp: otpCode,
+      expiresAt: Date.now() + 3 * 60 * 1000, // 3 minutes
+      attempts: 0
+    };
+
+    const otpDisplay = document.getElementById('dynamicOtpDisplay');
+    if (otpDisplay) otpDisplay.textContent = otpCode;
+
+    document.getElementById('resetStep2Form').classList.remove('hidden');
+    showAuthAlert(`تم إنشاء رمز تحقق آمن مكون من 6 أرقام وإرساله إلى ${email}.`, 'success');
+    showToast(`رمز التحقق الخاص بك: ${otpCode}`, '🔐');
+  }
+
+  // Handle Password Reset Step 2
+  async function handleResetStep2(e) {
+    e.preventDefault();
+    const code = document.getElementById('resetCodeInput').value.trim();
+    const newPass = document.getElementById('resetNewPassword').value;
+
+    if (!pendingResetState.email || !pendingResetState.otp) {
+      showAuthAlert('يرجى طلب رمز تحقق جديد أولاً.', 'error');
+      return;
+    }
+
+    if (Date.now() > pendingResetState.expiresAt) {
+      pendingResetState.otp = '';
+      document.getElementById('resetStep2Form').classList.add('hidden');
+      showAuthAlert('انتهت صلاحية رمز التحقق (مرّ أكثر من 3 دقائق). يرجى طلب رمز جديد.', 'error');
+      return;
+    }
+
+    if (code !== pendingResetState.otp) {
+      pendingResetState.attempts += 1;
+      if (pendingResetState.attempts >= 3) {
+        pendingResetState.otp = '';
+        document.getElementById('resetStep2Form').classList.add('hidden');
+        showAuthAlert('تم استنفاد محاولات إدخال الرمز (3 محاولات). يرجى طلب رمز تحقق جديد.', 'error');
+        return;
+      }
+      showAuthAlert(`رمز التحقق غير صحيح (محاولة ${pendingResetState.attempts} من 3).`, 'error');
+      return;
+    }
+
+    if (newPass.length < 6) {
+      showAuthAlert('يجب أن تتكون كلمة المرور الجديدة من 6 أحرف على الأقل.', 'error');
+      return;
+    }
+
+    const salt = generateCryptoSalt(16);
+    const passwordHash = await hashPasswordWithSalt(newPass, salt);
+    const targetEmail = pendingResetState.email;
+
+    const idx = registeredUsers.findIndex(u => u.email.toLowerCase() === targetEmail);
+    if (idx !== -1) {
+      registeredUsers[idx].salt = salt;
+      registeredUsers[idx].passwordHash = passwordHash;
+      delete registeredUsers[idx].password;
+    } else {
+      registeredUsers.push({
+        name: targetEmail.split('@')[0] || 'عضو أكلي',
+        email: targetEmail,
+        city: '',
+        salt,
+        passwordHash
+      });
+    }
+
+    pendingResetState = { email: '', otp: '', expiresAt: 0, attempts: 0 };
+    saveState();
+    document.getElementById('resetStep1Form').reset();
+    document.getElementById('resetStep2Form').reset();
+    switchAuthTab('login');
+    document.getElementById('loginEmail').value = targetEmail;
+    showAuthAlert('تم تعيين كلمة المرور الجديدة بنجاح! يمكنك الآن تسجيل الدخول بها ✅', 'success');
+    showToast('تم تحديث كلمة المرور بنجاح 🔐');
+  }
+
+  function demoSocialLogin(provider) {
+    const socialProfiles = {
+      Google: { name: 'كريم الحسيني', email: 'karim@gmail.com', city: '' },
+      Apple: { name: 'سارة المنصور', email: 'sara@icloud.com', city: '' },
+      Facebook: { name: 'ليلى مراد', email: 'layla@facebook.com', city: '' }
+    };
+    currentUser = socialProfiles[provider] || { name: 'عضو أكلي', email: 'user@example.com', city: '' };
+    saveState();
+    updateAuthUI();
+    showToast(`تم تسجيل الدخول بنجاح عبر ${provider} ✅`);
+  }
+
+  function logoutUser() {
+    currentUser = null;
+    saveState();
+    updateAuthUI();
+    switchAuthTab('login');
+    showToast('تم تسجيل الخروج بنجاح');
+  }
+
+  function updateAuthUI() {
+    const profileBox = document.getElementById('loggedInProfileBox');
+    const authSplitWrap = document.getElementById('authSplitWrap');
+    const navAuthLabel = document.getElementById('navAuthLabel');
+    const mobileAuthLabel = document.getElementById('mobileAuthLabel');
+
+    if (currentUser) {
+      profileBox.classList.remove('hidden');
+      authSplitWrap.style.display = 'none';
+      navAuthLabel.textContent = currentUser.name;
+      mobileAuthLabel.textContent = currentUser.name.split(' ')[0];
+      document.getElementById('profileNameDisplay').textContent = currentUser.name;
+      document.getElementById('profileMetaDisplay').textContent = currentUser.city
+        ? `${currentUser.city} • ${currentUser.email}`
+        : currentUser.email;
+      document.getElementById('profileAvatar').textContent = currentUser.name.charAt(0);
+    } else {
+      profileBox.classList.add('hidden');
+      authSplitWrap.style.display = '';
+      navAuthLabel.textContent = 'تسجيل الدخول';
+      mobileAuthLabel.textContent = 'حسابي';
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     10. UTILITIES & TOAST
+  -------------------------------------------------------------------------- */
+  let toastTimeout = null;
+  function showToast(message, icon = '✅') {
+    const box = document.getElementById('toastBox');
+    document.getElementById('toastIcon').textContent = icon;
+    document.getElementById('toastMessage').textContent = message;
+    box.classList.remove('hidden');
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      box.classList.add('hidden');
+    }, 3400);
+  }
+
+  // Initialize application on load
+  window.addEventListener('DOMContentLoaded', initAppState);
+</script>
+</body>
+</html>

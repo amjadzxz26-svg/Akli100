@@ -1285,6 +1285,7 @@
 </nav>
 
 <!-- ==================== APPLICATION LOGIC ==================== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   /* --------------------------------------------------------------------------
      0. SECURITY UTILITIES: XSS SANITIZATION, URL VALIDATION & CRYPTO HASHING
@@ -2265,74 +2266,66 @@
     showToast('تمت تعبئة نموذج تجربة جاهز — يمكنك الضغط على نشر الآن ✨');
   }
 
-  document.getElementById('postForm').addEventListener('submit', e => {
+  document.getElementById('postForm').addEventListener('submit', async e => {
     e.preventDefault();
+    if (!currentUser || !currentUser.id) {
+      showToast('سجّل الدخول أولاً قبل نشر تجربة', '🔐');
+      switchView('auth');
+      return;
+    }
     const name = document.getElementById('name').value.trim();
     const cat = document.getElementById('category').value;
-    const store = document.getElementById('storeInput').value.trim(); // Optional
-    const country = document.getElementById('countryInput').value.trim(); // Optional
+    const store = document.getElementById('storeInput').value.trim();
+    const country = document.getElementById('countryInput').value.trim();
     const exp = document.getElementById('experience').value.trim();
-
-    const photosToSave = selectedFilesDataUrls.length > 0 ? [...selectedFilesDataUrls] : [
-      {
-        url: createProductVisual(name, cat, store || cat, '#16845d', '#0d553e', '🍽️', 'صورة المنتج'),
-        caption: 'صورة المنتج'
+    if (!name || !cat || !exp) return showToast('يرجى تعبئة اسم المنتج والتصنيف والتجربة', '⚠️');
+    const submitBtn = e.submitter || document.querySelector('#postForm .submit-btn');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'جارٍ النشر...'; }
+    try {
+      const { data: category, error: catError } = await akliSupabase.from('categories').select('id').eq('name',cat).single();
+      if (catError) throw catError;
+      const { data: product, error: productError } = await akliSupabase.from('products').insert({
+        name, category_id: category.id, country, store,
+        tags: selectedQuickTags.length ? selectedQuickTags : ['طعم ممتاز ✨'],
+        created_by: currentUser.id
+      }).select().single();
+      if (productError) throw productError;
+      const photos = selectedFilesDataUrls.length ? [...selectedFilesDataUrls] : [];
+      const imageRows = [];
+      for (let i=0;i<photos.length;i++) {
+        const dataUrl = photos[i].url;
+        if (!dataUrl || !dataUrl.startsWith('data:image/')) continue;
+        const blob = await (await fetch(dataUrl)).blob();
+        const filePath = currentUser.id + '/' + product.id + '/' + (i+1) + '.jpg';
+        const { error: uploadError } = await akliSupabase.storage.from('product-photos').upload(filePath,blob,{contentType:'image/jpeg',upsert:false});
+        if (uploadError) throw uploadError;
+        const { data: publicData } = akliSupabase.storage.from('product-photos').getPublicUrl(filePath);
+        imageRows.push({product_id:product.id,storage_path:filePath,caption:photos[i].caption || '',sort_order:i});
       }
-    ];
-
-    const authorDisplay = currentUser
-      ? (currentUser.city ? `${currentUser.name} — ${currentUser.city}` : currentUser.name)
-      : 'مشارك من مجتمع أكلي';
-
-    const newProduct = {
-      id: 'p_' + Date.now(),
-      name,
-      category: cat,
-      country,
-      store,
-      rating: selectedStarRating,
-      helpfulCount: 1,
-      HelpfulClicked: true,
-      tags: selectedQuickTags.length > 0 ? [...selectedQuickTags] : ['طعم ممتاز ✨'],
-      photos: photosToSave,
-      reviews: [
-        {
-          author: authorDisplay,
-          rating: selectedStarRating,
-          date: 'الآن',
-          comment: exp
-        }
-      ]
-    };
-
-    products.unshift(newProduct);
-    saveState();
-
-    // Update Prototype 1 Preview Result Box
-    const metaParts = [cat, store, country].filter(Boolean).join(' • ');
-    document.getElementById('summary').textContent =
-      `${name} (${metaParts}) | ${exp} | عدد الصور المرفقة: ${photosToSave.length}`;
-
-    const out = document.getElementById('publishedPhotos');
-    out.innerHTML = '';
-    photosToSave.forEach(ph => {
-      const img = document.createElement('img');
-      img.src = ph.url;
-      img.alt = 'صورة مرفقة';
-      img.style.cssText = 'width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;border:1px solid #cce8d6';
-      out.append(img);
-    });
-    document.getElementById('result').style.display = 'block';
-
-    // Reset form inputs
-    document.getElementById('name').value = '';
-    document.getElementById('storeInput').value = '';
-    document.getElementById('countryInput').value = '';
-    document.getElementById('experience').value = '';
-    selectedFilesDataUrls = [];
-    renderPhotoPreviews();
-    renderProductsFeed();
-    showToast('تم نشر تجربتك وإضافتها إلى الصفحة الرئيسية بنجاح! 🎉');
+      if (imageRows.length) {
+        const { error: imageError } = await akliSupabase.from('product_images').insert(imageRows);
+        if (imageError) throw imageError;
+      }
+      const { error: reviewError } = await akliSupabase.from('experiences').insert({
+        product_id:product.id,author_id:currentUser.id,author_name:currentUser.name,
+        rating:selectedStarRating,comment:exp
+      });
+      if (reviewError) throw reviewError;
+      document.getElementById('summary').textContent = name + ' (' + [cat,store,country].filter(Boolean).join(' • ') + ') | ' + exp + ' | عدد الصور: ' + imageRows.length;
+      document.getElementById('publishedPhotos').innerHTML = '';
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('postForm').reset();
+      selectedFilesDataUrls = [];
+      renderPhotoPreviews();
+      await loadAkliData();
+      renderProductsFeed();
+      showToast('تم نشر المنتج وتجربتك وحفظ الصور للجميع 🎉');
+    } catch (err) {
+      console.error(err);
+      showToast('تعذر النشر: ' + (err.message || 'حدث خطأ غير متوقع'), '⚠️');
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'نشر التجربة وإضافتها للمجتمع 🚀'; }
+    }
   });
 
   /* --------------------------------------------------------------------------
@@ -2697,6 +2690,169 @@
     toastTimeout = setTimeout(() => {
       box.classList.add('hidden');
     }, 3400);
+  }
+
+
+  // ===== Akli + Supabase integration =====
+  const AKLI_SUPABASE_URL = 'https://wdkfxcferiacqwuzpikt.supabase.co';
+  const AKLI_SUPABASE_KEY = 'sb_publishable_oQFdZ-lZEY-OmU06u2h8rA_pm-jaUkO';
+  const akliSupabase = window.supabase.createClient(AKLI_SUPABASE_URL, AKLI_SUPABASE_KEY);
+  let akliCategories = [];
+
+  function mapAkliProduct(row) {
+    const photos = (row.product_images || []).slice().sort((a,b)=>a.sort_order-b.sort_order).map(img => {
+      const {data} = akliSupabase.storage.from('product-photos').getPublicUrl(img.storage_path);
+      return {url:data.publicUrl,caption:img.caption || ''};
+    });
+    const reviews = (row.experiences || []).slice().sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(r=>({
+      author:r.author_name,rating:r.rating,date:new Date(r.created_at).toLocaleDateString('ar'),comment:r.comment
+    }));
+    return {
+      id:row.id,name:row.name,category:row.categories?.name || 'منتجات أخرى',
+      country:row.country || '',store:row.store || '',rating:Number(row.average_rating || 0),
+      helpfulCount:Number(row.helpful_count || 0),HelpfulClicked:false,
+      tags:row.tags || [],photos,reviews
+    };
+  }
+
+  async function loadAkliData() {
+    const [{data:cats,error:catError},{data:rows,error:productsError}] = await Promise.all([
+      akliSupabase.from('categories').select('id,name').order('sort_order'),
+      akliSupabase.from('products').select('*,categories(name),product_images(*),experiences(*)').order('created_at',{ascending:false})
+    ]);
+    if (catError) throw catError;
+    if (productsError) throw productsError;
+    akliCategories = cats || [];
+    products = (rows || []).map(mapAkliProduct);
+    if (currentUser?.id) {
+      const {data:marks,error:markError} = await akliSupabase.from('bookmarks').select('product_id').eq('user_id',currentUser.id);
+      if (markError) throw markError;
+      savedIds = (marks || []).map(x=>x.product_id);
+    } else savedIds = [];
+    updateHeaderCounters();
+    renderSavedProducts();
+  }
+
+  async function syncAkliUser(session) {
+    const user = session?.user;
+    if (!user) { currentUser=null; updateAuthUI(); return; }
+    const meta=user.user_metadata || {};
+    currentUser={id:user.id,name:meta.name || user.email?.split('@')[0] || 'عضو أكلي',email:user.email || '',city:meta.city || ''};
+    updateAuthUI();
+  }
+
+  async function initAppState() {
+    updateAuthUI();
+    selectRating(5);
+    try {
+      const {data:{session},error}=await akliSupabase.auth.getSession();
+      if(error) throw error;
+      await syncAkliUser(session);
+      await loadAkliData();
+      renderProductsFeed();
+      renderSavedProducts();
+      akliSupabase.auth.onAuthStateChange((_event,newSession)=>{
+        setTimeout(async()=>{await syncAkliUser(newSession);try{await loadAkliData();renderProductsFeed();}catch(err){console.error(err);}},0);
+      });
+    } catch(err) {
+      console.error(err);
+      showToast('تعذر الاتصال بقاعدة البيانات. حدّث الصفحة وحاول مجدداً.', '⚠️');
+    }
+  }
+
+  function saveState() { updateHeaderCounters(); }
+
+  async function handleSignupSubmit(e) {
+    e.preventDefault(); hideAuthAlert();
+    const name=document.getElementById('signupName').value.trim();
+    const email=document.getElementById('signupEmail').value.trim().toLowerCase();
+    const city=document.getElementById('signupCity').value.trim();
+    const password=document.getElementById('signupPassword').value;
+    const confirmPassword=document.getElementById('signupPasswordConfirm').value;
+    if(!name||!email||!password) return showAuthAlert('يرجى تعبئة الحقول المطلوبة.','error');
+    if(password.length<8) return showAuthAlert('كلمة المرور يجب أن تكون 8 أحرف على الأقل.','error');
+    if(password!==confirmPassword) return showAuthAlert('كلمتا المرور غير متطابقتين.','error');
+    try {
+      const {data,error}=await akliSupabase.auth.signUp({email,password,options:{data:{name,city},emailRedirectTo:window.location.origin}});
+      if(error) throw error;
+      document.getElementById('signupForm').reset();
+      if(data.session){await syncAkliUser(data.session);showToast('تم إنشاء الحساب وتسجيل الدخول 🎉');}
+      else showAuthAlert('تم إنشاء الحساب. افتح بريدك الإلكتروني واضغط رابط التأكيد قبل تسجيل الدخول.','success');
+    } catch(err){showAuthAlert(err.message || 'تعذر إنشاء الحساب.','error');}
+  }
+
+  async function handleLoginSubmit(e) {
+    e.preventDefault(); hideAuthAlert();
+    const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+    const password=document.getElementById('loginPassword').value;
+    if(!email||!password) return showAuthAlert('أدخل البريد الإلكتروني وكلمة المرور.','error');
+    try {
+      const {data,error}=await akliSupabase.auth.signInWithPassword({email,password});
+      if(error) throw error;
+      document.getElementById('loginForm').reset();
+      await syncAkliUser(data.session);
+      await loadAkliData();
+      showToast('أهلاً بعودتك يا '+currentUser.name+' 👋');
+    } catch(err){showAuthAlert(err.message || 'بيانات الدخول غير صحيحة.','error');}
+  }
+
+  async function handleResetStep1(e) {
+    e.preventDefault();
+    const email=document.getElementById('resetEmail').value.trim().toLowerCase();
+    if(!email) return;
+    try {
+      const {error}=await akliSupabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});
+      if(error) throw error;
+      showAuthAlert('إذا كان البريد مسجلاً، سيصلك رابط آمن لإعادة تعيين كلمة المرور. افتحه من نفس المتصفح.','success');
+    } catch(err){showAuthAlert(err.message || 'تعذر إرسال رسالة الاستعادة.','error');}
+  }
+
+  async function handleResetStep2(e) {
+    e.preventDefault();
+    const newPass=document.getElementById('resetNewPassword').value;
+    if(newPass.length<8) return showAuthAlert('كلمة المرور يجب أن تكون 8 أحرف على الأقل.','error');
+    try {
+      const {error}=await akliSupabase.auth.updateUser({password:newPass});
+      if(error) throw error;
+      document.getElementById('resetStep2Form').reset();
+      showAuthAlert('تم تحديث كلمة المرور بنجاح.','success');
+    } catch(err){showAuthAlert(err.message || 'افتح رابط الاستعادة الذي وصلك بالبريد أولاً.','error');}
+  }
+
+  async function logoutUser() {
+    const {error}=await akliSupabase.auth.signOut();
+    if(error) return showToast(error.message,'⚠️');
+    currentUser=null; savedIds=[]; updateAuthUI(); switchAuthTab('login'); renderSavedProducts();
+    showToast('تم تسجيل الخروج بنجاح');
+  }
+
+  async function demoSocialLogin(provider) {
+    showAuthAlert('تسجيل الدخول عبر '+provider+' غير مفعّل بعد. استخدم البريد الإلكتروني وكلمة المرور.','error');
+  }
+
+  async function toggleBookmark(productId) {
+    if(!currentUser?.id){showToast('سجّل الدخول لحفظ المنتجات','🔐');return;}
+    const exists=savedIds.includes(productId);
+    const result=exists
+      ? await akliSupabase.from('bookmarks').delete().eq('user_id',currentUser.id).eq('product_id',productId)
+      : await akliSupabase.from('bookmarks').insert({user_id:currentUser.id,product_id:productId});
+    if(result.error) return showToast(result.error.message,'⚠️');
+    await loadAkliData();renderProductsFeed();renderSavedProducts();
+    if(currentModalProductId===productId){const p=products.find(x=>x.id===productId);if(p)refreshModalButtons(p);}
+  }
+
+  async function submitModalReview(e) {
+    e.preventDefault();
+    const p=products.find(x=>x.id===currentModalProductId);
+    if(!p||!currentUser?.id){showToast('سجّل الدخول أولاً لإضافة تجربة','🔐');switchView('auth');return;}
+    const rating=parseInt(document.getElementById('modalReviewerRating').value,10)||5;
+    const comment=document.getElementById('modalReviewerComment').value.trim();
+    if(!comment)return;
+    const {error}=await akliSupabase.from('experiences').insert({product_id:p.id,author_id:currentUser.id,author_name:currentUser.name,rating,comment});
+    if(error)return showToast(error.message,'⚠️');
+    document.getElementById('modalReviewerComment').value='';
+    await loadAkliData();openProductModal(p.id);renderProductsFeed();
+    showToast('تمت إضافة تجربتك ومشاركتها مع الجميع 💬');
   }
 
   // Initialize application on load
